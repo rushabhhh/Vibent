@@ -106,66 +106,101 @@ export default function Home() {
           </div>
         </nav>
 
-        {/* Hero */}
-        <header className="mx-auto max-w-7xl px-6 pt-16 md:pt-24">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              DeSOC, verified by your work — not your clout
-            </div>
+        <div className="min-h-screen bg-[#0B0B0F] text-white">
+      {/* Hero */}
+      <header className="relative flex min-h-screen items-center overflow-hidden px-6 md:px-16">
+        
+        {/* Left content */}
+        <div className="relative z-10 max-w-xl">
+          <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-sm text-white/70">
+            <span className="h-2 w-2 rounded-full bg-emerald-400"></span>
+            DeSOC, verified by your work — not your clout
+          </span>
 
-            <h1 className="bg-gradient-to-br from-white to-white/70 bg-clip-text text-4xl font-bold leading-tight text-transparent md:text-6xl md:leading-[1.05]">
-              Own your reputation with
-              <span className="mx-2 bg-gradient-to-r from-fuchsia-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">
-                Proof of Work
-              </span>
-              and
-              <span className="mx-2 bg-gradient-to-r from-amber-300 to-rose-300 bg-clip-text text-transparent">
-                Proof of Talent
-              </span>
-            </h1>
+          <h1 className="mt-6 bg-gradient-to-br from-white to-white/70 bg-clip-text text-4xl font-extrabold leading-tight text-transparent md:text-6xl md:leading-[1.05]">
+            Own your reputation with{" "}
+            <span className="bg-gradient-to-r from-fuchsia-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">
+              Proof of Work
+            </span>{" "}
+            and{" "}
+            <span className="bg-gradient-to-r from-amber-300 to-rose-300 bg-clip-text text-transparent">
+              Proof of Talent
+            </span>
+          </h1>
 
-            <p className="mt-5 text-balance text-lg text-white/70 md:text-xl">
-              Vibent is a decentralized social layer that mints your
-              contributions, skills, and community impact into verifiable
-              on-chain credentials. Build in public. Unlock opportunities.
-            </p>
+          <p className="mt-5 text-lg text-white/70 md:text-xl">
+            Vibent is a decentralized social layer that mints your contributions,
+            skills, and community impact into verifiable on-chain credentials.
+            Build in public. Unlock opportunities.
+          </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link
-                href="#waitlist"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
-              >
-                Get early access
-                <span aria-hidden>🚀</span>
-              </Link>
-              <a
-                href="https://demo.example.com"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-medium text-white/90 transition hover:bg-white/10"
-              >
-                Watch demo
-                <span aria-hidden>▶️</span>
-              </a>
-            </div>
-
-            <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 items-center gap-4 text-center text-xs text-white/60">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <div className="text-lg font-semibold text-white">10k+</div>
-                Credentials issued
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <div className="text-lg font-semibold text-white">120+</div>
-                DAOs & communities
-              </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                <div className="text-lg font-semibold text-white">0x</div>
-                Your data, your keys
-              </div>
-            </div>
+          <div className="mt-8 flex flex-col items-center justify-start gap-3 sm:flex-row">
+            <Link
+              href="#waitlist"
+              className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
+            >
+              Get early access 🚀
+            </Link>
+            <a
+              href="https://demo.example.com"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-medium text-white/90 transition hover:bg-white/10"
+            >
+              Watch demo ▶️
+            </a>
           </div>
-        </header>
+        </div>
+
+        {/* Right planet + orbits */}
+        <div className="absolute right-[-25%] top-1/2 hidden -translate-y-1/2 md:flex">
+          <div className="relative w-[900px] h-[800px]">
+            {/* Orbit rings */}
+            <svg
+              className="absolute inset-0 w-full h-full"
+              viewBox="0 0 1200 1200"
+              fill="none"
+            >
+              <ellipse
+                cx="600"
+                cy="600"
+                rx="500"
+                ry="220"
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth="1"
+              />
+              <ellipse
+                cx="600"
+                cy="600"
+                rx="400"
+                ry="180"
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth="1"
+              />
+              <ellipse
+                cx="600"
+                cy="600"
+                rx="300"
+                ry="140"
+                stroke="rgba(255,255,255,0.08)"
+                strokeWidth="1"
+              />
+            </svg>
+
+            {/* Glowing orbit dots */}
+            <span className="absolute left-[40%] top-[55%] h-4 w-4 animate-pulse rounded-full bg-lime-400 shadow-[0_0_20px_#bef264]"></span>
+            <span className="absolute left-[65%] top-[35%] h-4 w-4 animate-pulse rounded-full bg-lime-400 shadow-[0_0_20px_#bef264]"></span>
+
+            {/* Planet */}
+            <img
+              src="https://static.wixstatic.com/media/c22c23_febcc5ce4b2148edb1b6ac831cb22c41~mv2.webp"
+              alt="Planet"
+              className="relative z-10 w-full h-full rounded-full object-cover"
+            />
+          </div>
+        </div>
+      </header>
+    </div>
 
         {/* Features */}
         <section id="features" className="mx-auto max-w-7xl px-6 pb-12 pt-16 md:pt-24">
