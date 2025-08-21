@@ -98,16 +98,10 @@ export default function Home() {
                 Docs
               </a>
               <Link
-                href="/auth/login"
-                className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium transition hover:bg-white/10"
-              >
-                Log In
-              </Link>
-              <Link
-                href="/auth/register"
+                href="/auth/"
                 className="rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
               >
-                Sign Up
+                Let&apos;s Go
               </Link>
             </div>
           </div>
@@ -357,7 +351,7 @@ export default function Home() {
                 </h2>
                 
                 <p className="text-white/80 mb-6 leading-relaxed">
-                  Built for high performance and low fees, BNB Smart Chain is the foundation of Vibent's credential ecosystem. 
+                  Built for high performance and low fees, BNB Smart Chain is the foundation of Vibent&apos;s credential ecosystem. 
                   With high throughput capabilities, secure infrastructure, and growing adoption, BNB Chain provides the ideal
                   blockchain environment for your professional identity and verifiable credentials.
                 </p>
