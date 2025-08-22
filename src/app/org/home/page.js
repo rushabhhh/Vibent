@@ -6,20 +6,11 @@ import { useEffect, useRef, useState } from 'react';
 export default function OrgHomePage() {
   const orgName = 'Nebula Labs';
 
-  // Header nav — trimmed
   const headerNav = [
     { label: 'Home', href: '/org/home' },
     { label: 'Credentials', href: '/org/credentials' },
     { label: 'Settings', href: '/org/settings' },
     { label: 'Messages', href: '/org/messages' },
-  ];
-
-  // Left rail data
-  const kpis = [
-    { label: 'Credentials Issued', value: '1,284' },
-    { label: 'Active Opportunities', value: '12' },
-    { label: 'Event Registrations', value: '3,905' },
-    { label: 'Verified Talent', value: '7,412' },
   ];
 
   const pastEvents = [
@@ -283,7 +274,7 @@ export default function OrgHomePage() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                <span className="text-white/80">No {data.name} skills listed in {selectedUser.name}'s profile</span>
+                <span className="text-white/80">No {data.name} skills listed in {selectedUser.name}&lsquo;s profile</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-400"></span>
@@ -294,7 +285,7 @@ export default function OrgHomePage() {
                 <span className="text-white/80">{selectedUser.title} role focuses on {selectedUser.skills[0]}-related skills</span>
               </div>
               <div className="mt-3 px-3 py-2 bg-black/40 rounded-md text-sm text-white/70 italic">
-                Note: Based on {selectedUser.name}'s verified profile, there's no evidence of {data.name} expertise. Their verified strengths are in {selectedUser.skills.join(', ')}.
+                Note: Based on {selectedUser.name}&lsquo;s verified profile, there&apos;s no evidence of {data.name} expertise. Their verified strengths are in {selectedUser.skills.join(', ')}.
               </div>
             </div>
           </div>

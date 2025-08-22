@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { WagmiProvider, useAccount, useChainId } from 'wagmi';
+import { WagmiProvider, useAccount, useChainId, useSignMessage } from 'wagmi';
 import { bscTestnet } from 'wagmi/chains';
 import { getDefaultConfig, RainbowKitProvider, ConnectButton, darkTheme } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -41,6 +41,7 @@ export default function OrgAuthPage() {
 function Content() {
   const router = useRouter();
   const { isConnected, address } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const chainId = useChainId();
   const isTestnet = chainId === bscTestnet.id;
 
@@ -73,24 +74,80 @@ function Content() {
 
   const handleOrgRegister = async (e) => {
     e.preventDefault();
-    if (!isConnected || !orgData.name || !orgData.domain) return;
+    if (!orgData.name || !orgData.domain) {
+      setError('Name and domain are required');
+      return;
+    }
+    if (!isConnected || !address) {
+      setError('Connect your wallet first');
+      return;
+    }
 
     setLoading(true);
     setError('');
 
     try {
-      // TODO: Add API call to register organization
-      console.log('Registering organization:', {
-        address,
-        ...orgData,
-        orgType,
-        isTestnet
+      // attempt register with current session/cookie
+      let res = await fetch('/api/org/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(orgData),
       });
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Redirect to org console
+      // if unauthorized, perform wallet auth (nonce->sign->verify) and retry
+      if (res.status === 401) {
+        // get nonce
+        const n = await fetch(`/api/auth/nonce?address=${address}`, { credentials: 'include' });
+        const njson = await n.json();
+        if (!n.ok) {
+          throw new Error(njson?.error || 'Could not get nonce');
+        }
+        const message = njson.message;
+
+        // sign
+        let signature;
+        try {
+          signature = await signMessageAsync({ message });
+        } catch (err) {
+          throw new Error('Signing cancelled or failed');
+        }
+
+        // verify
+        const v = await fetch('/api/auth/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ address, signature }),
+        });
+        const vjson = await v.json();
+        if (!v.ok) {
+          throw new Error(vjson?.error || 'Auth verify failed');
+        }
+
+        // retry register
+        res = await fetch('/api/org/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify(orgData),
+        });
+      }
+
+      const body = await res.json().catch(() => null);
+      if (!res.ok) {
+        // show specific messages for common cases
+        if (res.status === 409) {
+          setError('Domain already taken. Choose another domain.');
+        } else if (res.status === 401) {
+          setError(body?.error || 'Unauthorized');
+        } else {
+          setError(body?.error || 'Registration failed');
+        }
+        return;
+      }
+
+      // success -> navigate to org home
       router.push('/org/home');
     } catch (err) {
       console.error('Organization registration error:', err);
@@ -101,24 +158,68 @@ function Content() {
   };
 
   const checkExistingOrg = async () => {
-    if (!isConnected || !address) return;
-    
+    if (!isConnected || !address) {
+      setError('Connect your wallet first');
+      return;
+    }
+
     setCheckingOrg(true);
     setError('');
-    
+
     try {
-      // TODO: Replace with actual API call
-      console.log('Checking organization membership for address:', address);
-      
-      // Simulate API call with random result for demo
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const orgExists = Math.random() > 0.5; // Randomly succeed/fail for demo
-      
-      if (orgExists) {
-        // Organization exists, redirect
+      // 1) try check with current session (server will require session)
+      let res = await fetch('/api/org/check', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      // 2) if unauthorized, run auth sign flow (nonce -> sign -> verify) then retry
+      if (res.status === 401) {
+        // get nonce
+        const n = await fetch(`/api/auth/nonce?address=${address}`, { credentials: 'include' });
+        const njson = await n.json();
+        if (!n.ok) {
+          throw new Error(njson?.error || 'Could not get nonce');
+        }
+        const message = njson.message;
+
+        // sign
+        let signature;
+        try {
+          signature = await signMessageAsync({ message });
+        } catch (err) {
+          throw new Error('Signing cancelled or failed');
+        }
+
+        // verify
+        const v = await fetch('/api/auth/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ address, signature }),
+        });
+        const vjson = await v.json();
+        if (!v.ok) {
+          throw new Error(vjson?.error || 'Auth verify failed');
+        }
+
+        // retry check
+        res = await fetch('/api/org/check', {
+          method: 'POST',
+          credentials: 'include',
+        });
+      }
+
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => null);
+        if (res.status === 401) throw new Error('Unauthorized');
+        throw new Error(errBody?.error || 'Check failed');
+      }
+
+      const body = await res.json();
+      if (body.exists) {
         router.push('/org/home');
       } else {
-        // Organization doesn't exist
         setError("You don't have access to any organization. Please register a new organization instead.");
       }
     } catch (err) {
@@ -349,13 +450,13 @@ function Content() {
             </div>
 
             {/* Step Content */}
-            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-900/20 via-fuchsia-900/20 to-indigo-900/20 p-6">
+            <div className="relative overflow-hidden rounded-3xl b4order border-white/10 bg-gradient-to-br from-violet-900/20 via-fuchsia-900/20 to-indigo-900/20 p-6">
               {/* Step 1: Connect Wallet */}
               {currentStep === 1 && (
                 <div className="text-center max-w-lg mx-auto">
                   <h2 className="text-2xl font-semibold mb-4">Connect Your Wallet</h2>
                   <p className="text-white/70 mb-6">
-                    Connect your wallet to register a new organization and mint your organization's SBT.
+                    Connect your wallet to register a new organization and mint your organization&apos;s SBT.
                   </p>
                   
                   <div className="mb-6">

@@ -41,8 +41,21 @@ export const supabaseAdmin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KE
   auth: { persistSession: false },
 });
 
-/* ----- Helper functions (server-side intended) ----- */
-/* Use these from server API routes (supabaseAdmin) to keep logic centralized. */
+/* helper to ensure admin client available and fail early with helpful message */
+function ensureAdminAvailable() {
+  if (!SUPABASE_SERVICE_ROLE_KEY) {
+    const msg = 'Server missing SUPABASE_SERVICE_ROLE_KEY – admin operations are disabled. Set SUPABASE_SERVICE_ROLE_KEY in your server environment.';
+    console.error(msg);
+    throw new Error(msg);
+  }
+}
+
+/**
+ * Use the actual table name in your DB. Error log indicates your DB uses "orgs"
+ * so we reference "orgs" and "org_members" here.
+ */
+const ORG_TABLE = process.env.ORG_TABLE_NAME ?? 'orgs';
+const ORG_MEMBER_TABLE = process.env.ORG_MEMBER_TABLE_NAME ?? 'org_members';
 
 export async function getUserByAddress(address) {
   if (!address) return null;
@@ -132,4 +145,84 @@ export async function updateUserProfileByAddress(address, updatePayload = {}) {
     .single();
   if (error) throw error;
   return data;
+}
+
+// New helpers for organization logic
+export async function getOrgMembershipByAddress(address) {
+  if (!address) return [];
+  ensureAdminAvailable();
+  try {
+    const { data, error } = await supabaseAdmin
+      .from(ORG_MEMBER_TABLE)
+      .select(`id, org_id, role, created_at, ${ORG_TABLE}(id, name, domain, description)`)
+      .ilike('address', address.toLowerCase());
+    if (error) throw error;
+    return data || [];
+  } catch (err) {
+    console.error('getOrgMembershipByAddress error', err);
+    throw err;
+  }
+}
+
+export async function createOrganizationWithOwner(address, orgPayload = {}) {
+  ensureAdminAvailable();
+  if (!address) throw new Error('address required');
+  if (!orgPayload.name || !orgPayload.domain) throw new Error('name and domain required');
+
+  try {
+    // prevent duplicate domain (case-insensitive)
+    const { data: exists, error: checkErr } = await supabaseAdmin
+      .from(ORG_TABLE)
+      .select('id')
+      .ilike('domain', orgPayload.domain)
+      .maybeSingle();
+    if (checkErr) throw checkErr;
+    if (exists) {
+      const e = new Error('Organization domain already registered');
+      e.code = 'DUP_DOMAIN';
+      throw e;
+    }
+
+    // insert organization
+    const { data: orgData, error: orgErr } = await supabaseAdmin
+      .from(ORG_TABLE)
+      .insert({
+        name: orgPayload.name,
+        domain: orgPayload.domain,
+        description: orgPayload.description ?? null,
+      })
+      .select('*')
+      .single();
+    if (orgErr) throw orgErr;
+
+    // insert owner membership
+    const { data: memberData, error: memErr } = await supabaseAdmin
+      .from(ORG_MEMBER_TABLE)
+      .insert({
+        org_id: orgData.id,
+        address: address.toLowerCase(),
+        role: 'owner',
+      })
+      .select('*')
+      .single();
+    if (memErr) throw memErr;
+
+    return { organization: orgData, member: memberData };
+  } catch (err) {
+    // map common Postgres errors to clearer names for callers
+    if (err?.code === '23505') { // unique_violation
+      const e = new Error('Unique constraint violated');
+      e.code = 'PG_DUP';
+      throw e;
+    }
+    if (err?.code === '23503') { // foreign_key_violation
+      const e = new Error('Foreign key violation (possible table mismatch)');
+      e.code = 'PG_FK';
+      // include original details for server logs
+      console.error('createOrganizationWithOwner foreign key error', err);
+      throw e;
+    }
+    console.error('createOrganizationWithOwner error', err);
+    throw err;
+  }
 }
