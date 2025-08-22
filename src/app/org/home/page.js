@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+
 
 export default function OrgHomePage() {
   const orgName = 'Nebula Labs';
@@ -58,7 +60,7 @@ export default function OrgHomePage() {
     },
     {
       id: 'msg2',
-      sender: 'Zara M.',
+      sender: 'Jill Dhandhukiya.',
       avatar: 'Z',
       avatarColor: 'from-fuchsia-500 via-violet-500 to-indigo-500',
       message: 'I\'ve submitted the final code for review.',
@@ -67,7 +69,34 @@ export default function OrgHomePage() {
     },
     {
       id: 'msg3',
-      sender: 'Kenji I.',
+      sender: 'Rushabh Rathod.',
+      avatar: 'K',
+      avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
+      message: 'Can we discuss the zkSNARK implementation?',
+      time: '1d ago',
+      unread: false
+    },
+    {
+      id: 'msg4',
+      sender: 'Diya Sarvaiya',
+      avatar: 'K',
+      avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
+      message: 'Can we discuss the zkSNARK implementation?',
+      time: '1d ago',
+      unread: false
+    },
+    {
+      id: 'msg7',
+      sender: 'Archita Sharma',
+      avatar: 'K',
+      avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
+      message: 'Can we discuss the zkSNARK implementation?',
+      time: '1d ago',
+      unread: false
+    },
+    {
+      id: 'msg5',
+      sender: 'Zara ',
       avatar: 'K',
       avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
       message: 'Can we discuss the zkSNARK implementation?',
@@ -88,6 +117,7 @@ export default function OrgHomePage() {
       skills: ['Solidity', 'zk‑SNARKs', 'Viem', 'Security'],
       badges: ['PoT Verified', 'SBT Holder'],
       cover: 'from-fuchsia-500 via-violet-500 to-indigo-500',
+      bannerImage: '/images/banner1.jpg', // Add banner image path
       achievements: ['Hackathon Winner — Nebula zk 2025', 'Contributor — Auditor Guild', 'Top 1% Reels • zk Education'],
       bio: 'Senior blockchain developer specialized in zkSNARKs and smart contract security...',
       github: 'github.com/zaradev',
@@ -536,18 +566,12 @@ export default function OrgHomePage() {
             >
               Issue Credential
             </button>
-            {/* <Link
-              href="/org/messages"
-              className="hidden rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-base hover:bg-white/10 md:inline-flex"
-            >
-              Messages
-            </Link> */}
           </div>
         </div>
       </nav>
 
       {/* Main */}
-      <main className="mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-10">
+      <main className="mx-auto px-4 py-8 md:py-10"> 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           {/* Left rail: KPIs + Recent Issuance */}
           <aside className="md:col-span-3">
@@ -681,7 +705,17 @@ export default function OrgHomePage() {
                 <div key={p.id} className="reel-card snap-start">
                   <article className="relative h-[72vh] overflow-hidden rounded-3xl border border-white/10 bg-[#0C0C12]">
                     {/* Cover */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${p.cover} opacity-20`} />
+                    <div className="absolute inset-0">
+                      <Image
+                        src={p.bannerImage || '/images/default-banner.jpg'} // Fallback to default banner
+                        alt={`${p.name}'s banner`}
+                        fill
+                        className="object-cover opacity-20"
+                        priority
+                      />
+                      {/* Add a gradient overlay */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${p.cover} opacity-30 mix-blend-overlay`} />
+                    </div>
                     {/* Content */}
                     <div className="relative grid h-full grid-rows-[auto_1fr_auto] p-6">
                       {/* Top: identity */}
@@ -809,39 +843,15 @@ export default function OrgHomePage() {
 
           {/* Right: Quick actions + Insights */}
           <aside className="md:col-span-3">
-            <div className="space-y-6">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-medium">Quick actions</h3>
-                <div className="mt-4 grid gap-3">
-                  <button
-                    onClick={() => setIssueOpen(true)}
-                    className="w-full rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium"
-                  >
-                    Issue Credential
-                  </button>
-                  <Link
-                    href="/org/templates"
-                    className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-center text-sm hover:bg-black/30"
-                  >
-                    Manage templates
-                  </Link>
-                  {/* <Link
-                    href="/org/opportunities"
-                    className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-center text-sm hover:bg-black/30"
-                  >
-                    Manage opportunities
-                  </Link> */}
-                </div>
-              </div>
-
-              {/* Messages */}
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-medium">Messages</h3>
-                  <Link href="/org/messages" className="text-xs text-white/60 hover:text-white">
-                    View all
-                  </Link>
-                </div>
+  <div className="space-y-6">
+    {/* Messages section moved to top */}
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-medium">Messages</h3>
+        <Link href="/org/messages" className="text-xs text-white/60 hover:text-white">
+          View all
+        </Link>
+      </div>
                 
                 <div className="space-y-3">
                   {recentMessages.map((msg) => (
@@ -1328,16 +1338,6 @@ function IssueCredentialModal({ open, onClose }) {
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-              </svg>
-              Add another participant
-            </button>
-          </div>
-          
-          {/* Submit Buttons - Not fixed, part of the normal flow */}
-          <div className="border-t border-white/10 pt-4 mt-4">
-            <div className="flex gap-3">
               <button
                 type="submit"
                 className="flex-1 rounded-md bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400"
