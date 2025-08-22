@@ -148,7 +148,7 @@ export default function Home() {
 
               <div className="mt-8 flex flex-col items-center justify-start gap-3 sm:flex-row">
                 <Link
-                  href="/auth/register"
+                  href="/auth"
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
                 >
                   Start Now
@@ -269,7 +269,6 @@ export default function Home() {
                         />
                       </svg>
                     </div>
-                    
                     {/* Remaining logo elements unchanged */}
                     <div className="absolute w-[90%] h-[90%] animate-spin-reverse-slow">
                       <svg viewBox="0 0 100 100" className="w-full h-full">
