@@ -1,9 +1,13 @@
 // pages/index.js
 "use client";
+import {
+  useEffect,
+  useState, // Add this import
+} from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 
 export default function Home() {
   const features = [
@@ -77,6 +81,40 @@ export default function Home() {
     e.target.reset();
   };
 
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  // Create state to store window dimensions
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+
+  // Initialize window dimensions and transforms after mount
+  useEffect(() => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  }, []);
+
+  // Parallax transforms - using windowSize state
+  const rotateX = useTransform(mouseY, [0, windowSize.height], [10, -10]);
+  const rotateY = useTransform(mouseX, [0, windowSize.width], [-10, 10]);
+  const translateX = useTransform(mouseX, [0, windowSize.width], [-20, 20]);
+  const translateY = useTransform(mouseY, [0, windowSize.height], [-20, 20]);
+
+  const [followMouse, setFollowMouse] = useState(false);
+
+  // Track mouse movement
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      if (followMouse) {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+      }
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [followMouse]);
+
   return (
     <>
       <Head>
@@ -105,7 +143,7 @@ export default function Home() {
               <span className="font-semibold tracking-tight">Vibent</span>
             </Link>
             <div className="hidden items-center gap-8 text-sm text-white/80 md:flex">
-            <Link href="#proof" className="hover:text-white">
+              <Link href="#proof" className="hover:text-white">
                 Concept
               </Link>
               <Link href="#how" className="hover:text-white">
@@ -117,7 +155,7 @@ export default function Home() {
               <Link href="#features" className="hover:text-white">
                 Features
               </Link>
-              
+
               <Link
                 href="/auth/"
                 className="rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
@@ -127,7 +165,7 @@ export default function Home() {
             </div>
           </div>
         </nav>
-      {/* hero section */}
+        {/* hero section */}
         <div className="min-h-screen bg-[#0B0B0F] text-white">
           <header className="relative flex min-h-screen items-center overflow-hidden px-6 md:px-16">
             {/* Left content */}
@@ -259,11 +297,23 @@ export default function Home() {
                 type: "spring",
                 stiffness: 70,
               }}
+              onAnimationComplete={() => setFollowMouse(true)} // Enable mouse-follow after entrance
             >
               <div className="relative w-[900px] h-[800px]">
-                {/* Planet */}
+                {/* Planet with entrance + mouse-follow */}
                 <motion.div
                   className="relative z-10 w-full h-full rounded-full overflow-hidden"
+                  style={
+                    followMouse
+                      ? {
+                          rotateX,
+                          rotateY,
+                          x: translateX,
+                          y: translateY,
+                          perspective: 600,
+                        }
+                      : {}
+                  }
                   initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
                   animate={{ rotate: 0, scale: 1, opacity: 1 }}
                   transition={{
@@ -521,7 +571,13 @@ export default function Home() {
                 </h2>
 
                 <p className="text-white/80 mb-6 leading-relaxed">
-                  Built for high performance and low fees, BNB Smart Chain is the foundation of modern credential-based ecosystems. With rapid block finality (~3 seconds per block), affordable gas fees (just pennies per transaction), robust security, and unmatched throughput, BNB Chain has become the leading blockchain for professional identity and verifiable credentials.
+                  Built for high performance and low fees, BNB Smart Chain is
+                  the foundation of modern credential-based ecosystems. With
+                  rapid block finality (~3 seconds per block), affordable gas
+                  fees (just pennies per transaction), robust security, and
+                  unmatched throughput, BNB Chain has become the leading
+                  blockchain for professional identity and verifiable
+                  credentials.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -552,7 +608,8 @@ export default function Home() {
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        Daily fees usually translate to pennies per transaction, averaging 426–534 BNB/day in August 2025.
+                        Daily fees usually translate to pennies per transaction,
+                        averaging 426–534 BNB/day in August 2025.
                       </p>
                     </div>
                   </div>
@@ -583,7 +640,8 @@ export default function Home() {
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        Blocks confirm in approximately 3 seconds for instant transaction verification.
+                        Blocks confirm in approximately 3 seconds for instant
+                        transaction verification.
                       </p>
                     </div>
                   </div>
@@ -608,13 +666,14 @@ export default function Home() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-amber-300 flex items-center gap-2">
-                        100% EVM   Compatible
+                        100% EVM Compatible
                         <span className="text-xs text-amber-300/50 font-normal">
                           [v1.1.0+]
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        Deploy existing Ethereum-based smart contracts seamlessly.
+                        Deploy existing Ethereum-based smart contracts
+                        seamlessly.
                       </p>
                     </div>
                   </div>
@@ -645,7 +704,8 @@ export default function Home() {
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        Hosts over 5,800 decentralized applications, surpassing all other chains
+                        Hosts over 5,800 decentralized applications, surpassing
+                        all other chains
                       </p>
                     </div>
                   </div>
@@ -706,7 +766,10 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="proof" className="relative min-h-screen py-20 px-6 flex flex-col items-center justify-center overflow-hidden">
+        <section
+          id="proof"
+          className="relative min-h-screen py-20 px-6 flex flex-col items-center justify-center overflow-hidden"
+        >
           {/* Futuristic Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-black to-indigo-900">
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
@@ -1002,8 +1065,6 @@ export default function Home() {
           </div>
         </section>
 
-        
-
         {/* Waitlist */}
         {/* <section
           id="waitlist"
@@ -1078,7 +1139,6 @@ export default function Home() {
             </div>
           </div>
         </section> */}
-        
 
         {/* Footer */}
         <footer className="border-t border-white/10 bg-black/20">
