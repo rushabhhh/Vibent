@@ -126,11 +126,11 @@ export default function OrgLandingPage() {
             <span className="font-semibold tracking-tight">Vibent</span>
           </Link>
           <div className="hidden items-center gap-8 text-sm text-white/80 md:flex">
-            <Link href="#features" className="hover:text-white">Features</Link>
+            {/* <Link href="#features" className="hover:text-white">Features</Link>
             <Link href="#solutions" className="hover:text-white">Solutions</Link>
             <Link href="#templates" className="hover:text-white">Templates</Link>
             <Link href="#how" className="hover:text-white">How it works</Link>
-            <Link href="#faq" className="hover:text-white">FAQ</Link>
+            <Link href="#faq" className="hover:text-white">FAQ</Link> */}
             <Link
               href="/org/auth"
               className="rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
@@ -169,12 +169,7 @@ export default function OrgLandingPage() {
             >
               Start issuing credentials 🚀
             </Link>
-            <Link
-              href="#explorer"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-medium text-white/90 transition hover:bg-white/10"
-            >
-              Explore talent 🔎
-            </Link>
+            
           </div>
 
           <div className="mx-auto mt-12 grid max-w-3xl grid-cols-3 items-center gap-4 text-center text-xs text-white/60">
@@ -230,7 +225,7 @@ export default function OrgLandingPage() {
         </div>
       </section>
 
-      {/* Credential templates */}
+      {/* Credential templates
       <section id="templates" className="mx-auto max-w-7xl px-6 pb-12 pt-8 md:pt-12">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold md:text-4xl">Credential templates</h2>
@@ -252,9 +247,9 @@ export default function OrgLandingPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
-      {/* Talent Explorer (preview) */}
+      {/* Talent Explorer (preview)
       <section id="explorer" className="mx-auto max-w-7xl px-6 pb-12 pt-8 md:pt-12">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-semibold md:text-4xl">Discover talent by Proofs</h2>
@@ -302,7 +297,7 @@ export default function OrgLandingPage() {
             <Link href="/org/auth" className="text-sm text-white/80 hover:text-white">Open full explorer →</Link>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* How it works */}
       <section id="how" className="mx-auto max-w-7xl px-6 pb-12 pt-8 md:pt-12">
@@ -337,47 +332,6 @@ export default function OrgLandingPage() {
           </Link>
         </div>
       </section>
-
-      {/* Sponsor Challenges */}
-      <section className="mx-auto max-w-7xl px-6 pb-16 pt-8 md:pt-12">
-        <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-900/20 via-fuchsia-900/20 to-indigo-900/20 p-8 md:p-12">
-          <div className="mx-auto max-w-3xl text-center">
-            <h3 className="text-2xl font-semibold md:text-3xl">Engage the ecosystem</h3>
-            <p className="mt-2 text-white/70">
-              Sponsor reels, quizzes, or meme battles. Reward authentic engagement and
-              surface top talent with on‑chain proofs.
-            </p>
-            <div className="mt-6">
-              <Link
-                href="/org/auth"
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white/90 transition hover:bg-white/10"
-              >
-                Launch a sponsored challenge
-              </Link>
-            </div>
-          </div>
-          <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-fuchsia-500/20 blur-3xl" />
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section id="faq" className="mx-auto max-w-7xl px-6 pb-20">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="text-2xl font-semibold md:text-3xl">FAQ</h2>
-          <div className="mt-6 space-y-4">
-            {faq.map((f) => (
-              <details key={f.q} className="group rounded-xl border border-white/10 bg-white/5 p-5">
-                <summary className="flex cursor-pointer list-none items-center justify-between">
-                  <span className="font-medium">{f.q}</span>
-                  <span className="text-white/50 transition group-open:rotate-180">⌄</span>
-                </summary>
-                <p className="mt-3 text-sm text-white/70">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="border-t border-white/10 bg-black/20">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-white/60 md:flex-row">
