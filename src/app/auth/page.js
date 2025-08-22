@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { WagmiProvider, useAccount } from 'wagmi';
-import { bsc, bscTestnet } from 'wagmi/chains';
+import { WagmiProvider, useAccount, useSignMessage } from 'wagmi';
+import { bscTestnet } from 'wagmi/chains';
 import { getDefaultConfig, RainbowKitProvider, ConnectButton, darkTheme } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
@@ -12,11 +12,10 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 const queryClient = new QueryClient();
 
-// Build your wagmi + RainbowKit config
 const config = getDefaultConfig({
   appName: 'Vibent',
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID || '',
-  chains: [bsc, bscTestnet],
+  chains: [bscTestnet],
   ssr: true,
 });
 
@@ -27,7 +26,7 @@ export default function AuthPage() {
         <RainbowKitProvider
           modalSize="compact"
           theme={darkTheme({
-            accentColor: '#7c3aed', // violet-600
+            accentColor: '#7c3aed',
             accentColorForeground: 'white',
             borderRadius: 'large',
             overlayBlur: 'small',
@@ -43,22 +42,145 @@ export default function AuthPage() {
 function PageContent() {
   const router = useRouter();
   const { isConnected, address } = useAccount();
-  const [tab, setTab] = useState('login'); // 'login' | 'signup'
-  const loginTabRef = useRef(null);
-  const signupTabRef = useRef(null);
+  const { signMessageAsync } = useSignMessage();
+  const [loading, setLoading] = useState(false);
+  const [isNew, setIsNew] = useState(false);
+  const [showProfileForm, setShowProfileForm] = useState(false);
+  const [profile, setProfile] = useState({
+    name: '',
+    username: '',
+    profile_picker: '',
+    bio: '',
+    dob: '',
+    binance_id: '',
+    social_links: '',
+    interests: '',
+  });
+
+  // New: auto-sign flow state guards
+  const [pendingAutoSign, setPendingAutoSign] = useState(false);
+  const isSigningRef = useRef(false);
 
   useEffect(() => {
-    // focus the active tab for keyboard users
-    if (tab === 'login') loginTabRef.current?.focus();
-    else signupTabRef.current?.focus();
-  }, [tab]);
+    if (isNew) setShowProfileForm(true);
+  }, [isNew]);
+
+  // when user clicked "Connect" and connection completes, auto-run auth to sign nonce
+  useEffect(() => {
+    if (isConnected && pendingAutoSign) {
+      setPendingAutoSign(false);
+      // avoid double-sign
+      if (!isSigningRef.current) {
+        handleAuth();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isConnected, pendingAutoSign]);
+
+  async function handleAuth() {
+    if (isSigningRef.current) return;
+    if (!isConnected || !address) {
+      alert('Connect a wallet first');
+      return;
+    }
+
+    try {
+      isSigningRef.current = true;
+      setLoading(true);
+
+      // 1) get nonce/message from backend
+      const res1 = await fetch(`/api/auth/nonce?address=${address}`, { credentials: 'include' });
+      const data1 = await res1.json();
+      if (!res1.ok) {
+        alert(data1?.error || 'Could not get nonce');
+        return;
+      }
+      const message = data1.message;
+
+      // 2) sign (gasless)
+      let signature;
+      try {
+        signature = await signMessageAsync({ message });
+      } catch (err) {
+        // user rejected or signing failed
+        console.error('sign failed', err);
+        alert('Signing cancelled or failed');
+        return;
+      }
+
+      // 3) verify on backend
+      const res2 = await fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ address, signature }),
+      });
+      const data2 = await res2.json();
+      if (!res2.ok) {
+        alert(data2?.error || 'Login failed');
+        return;
+      }
+
+      // if new -> prompt for profile completion
+      if (data2.isNew) {
+        setIsNew(true);
+        return;
+      }
+
+      // existing user -> redirect (session cookie set)
+      router.push('/home');
+    } catch (err) {
+      console.error(err);
+      alert('Authentication error');
+    } finally {
+      isSigningRef.current = false;
+      setLoading(false);
+    }
+  }
+
+  async function submitProfile(e) {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      // prepare payload: parse social_links and interests
+      const payload = {
+        name: profile.name,
+        username: profile.username,
+        profile_picker: profile.profile_picker,
+        bio: profile.bio,
+        dob: profile.dob || null,
+        binance_id: profile.binance_id || null,
+        social_links: profile.social_links ? profile.social_links.split(',').map(s => s.trim()) : null,
+        interests: profile.interests ? profile.interests.split(',').map(s => s.trim()) : null,
+      };
+
+      const res = await fetch('/api/auth/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data?.error || 'Could not save profile');
+        setLoading(false);
+        return;
+      }
+
+      // profile saved — go to dashboard
+      setShowProfileForm(false);
+      setIsNew(false);
+      router.push('/org/home');
+    } catch (err) {
+      console.error(err);
+      alert('Profile save error');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-white">
-      <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 rounded-md bg-white/5 px-3 py-2 focus:ring-2 focus:ring-indigo-400">
-        Skip to content
-      </a>
-
       {/* Background glow */}
       <div className="pointer-events-none fixed inset-0 -z-10" aria-hidden>
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[40rem] rounded-full bg-fuchsia-600/20 blur-[120px]" />
@@ -120,48 +242,13 @@ function PageContent() {
         {/* Right: card */}
         <div className="relative">
           <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-violet-900/20 via-fuchsia-900/20 to-indigo-900/20 p-6 sm:p-8 shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]">
-            {/* Tabs */}
-            <div className="mx-auto flex max-w-md items-center gap-2 rounded-full border border-white/10 bg-black/30 p-1" role="tablist" aria-label="Authentication options">
-              <button
-                ref={loginTabRef}
-                id="tab-login"
-                role="tab"
-                aria-selected={tab === 'login'}
-                aria-controls="tabpanel-auth"
-                onClick={() => setTab('login')}
-                className={`w-1/2 rounded-full px-4 py-2 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400 ${
-                  tab === 'login'
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                Log in
-              </button>
-              <button
-                ref={signupTabRef}
-                id="tab-signup"
-                role="tab"
-                aria-selected={tab === 'signup'}
-                aria-controls="tabpanel-auth"
-                onClick={() => setTab('signup')}
-                className={`w-1/2 rounded-full px-4 py-2 text-sm transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400 ${
-                  tab === 'signup'
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/70 hover:text-white'
-                }`}
-              >
-                Create account
-              </button>
-            </div>
 
-            <div id="tabpanel-auth" role="tabpanel" aria-labelledby={tab === 'login' ? 'tab-login' : 'tab-signup'} className="mx-auto mt-6 max-w-md text-center" aria-live="polite">
+            <div className="mx-auto mt-6 max-w-md text-center" aria-live="polite">
               <p className="text-white/70">
-                {tab === 'login'
-                  ? 'Welcome back. Connect your wallet to continue.'
-                  : 'New to Vibent? Connect your wallet to create your account.'}
+                {'Welcome To Vibent. Connect your wallet to continue.' }
               </p>
 
-              {/* Connect button (custom-styled) */}
+              {/* Connect button (updated) */}
               <div className="mt-6">
                 <ConnectButton.Custom>
                   {({
@@ -173,46 +260,25 @@ function PageContent() {
                     mounted,
                   }) => {
                     const connected = mounted && account && chain;
-                    const buttonLabel = connected ? `Connected: ${account.displayName}` : 'Connect wallet';
+                    // When not connected: clicking will open connect modal and mark pendingAutoSign,
+                    // so after successful connection the effect will call handleAuth and trigger signing.
+                    const onClickWhenDisconnected = () => {
+                      setPendingAutoSign(true);
+                      openConnectModal?.();
+                    };
+
                     return (
-                      <div
-                        className={`inline-flex w-full flex-col items-center justify-center gap-3`}
-                        aria-live="polite"
-                      >
-                        {/* Chain warning */}
+                      <div className={`inline-flex w-full flex-col items-center justify-center gap-3`} aria-live="polite">
                         {connected && chain?.unsupported ? (
-                          <button
-                            onClick={openChainModal}
-                            type="button"
-                            className="w-full rounded-xl border border-amber-400/30 bg-amber-500/10 px-6 py-3 text-sm font-medium text-amber-200 transition hover:bg-amber-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-amber-400"
-                            aria-label="Switch network"
-                          >
-                            Wrong network — switch chain
-                          </button>
+                          <button onClick={openChainModal} type="button" className="w-full rounded-xl border border-amber-400/30 bg-amber-500/10 px-6 py-3 text-sm font-medium text-amber-200">Wrong network — switch chain</button>
                         ) : (
                           <button
-                            onClick={ connected ? openAccountModal : openConnectModal }
+                            onClick={ connected ? handleAuth : onClickWhenDisconnected }
                             type="button"
-                            className="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 text-sm font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.01] focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400"
-                            aria-pressed={connected}
-                            aria-label={connected ? `Account connected: ${account.displayName}` : 'Connect wallet to Vibent'}
+                            className="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 text-sm font-medium shadow-lg"
+                            aria-disabled={loading}
                           >
-                            <span className="inline-flex items-center justify-center gap-2">
-                              {connected ? (
-                                <>
-                                  <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
-                                  <span>{buttonLabel}</span>
-                                </>
-                              ) : (
-                                <>
-                                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden>
-                                    <path d="M12 2v4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M5 8v8a7 7 0 007 7v0a7 7 0 007-7V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                  </svg>
-                                  <span>{buttonLabel}</span>
-                                </>
-                              )}
-                            </span>
+                            {connected ? `Continue with ${account.displayName}` : 'Connect wallet'}
                           </button>
                         )}
                       </div>
@@ -221,30 +287,161 @@ function PageContent() {
                 </ConnectButton.Custom>
               </div>
 
-              {/* Continue CTA */}
-              <ContinueSection isConnected={isConnected} address={address} onContinue={() => router.push('/')} />
-              {/* Terms */}
-              <p className="mt-6 text-xs text-white/50">
-                By connecting a wallet you agree to our{' '}
-                <a href="#" className="underline hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400">
-                  Terms
-                </a>{' '}
-                and{' '}
-                <a href="#" className="underline hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400">
-                  Privacy
-                </a>
-                .
-              </p>
+              {/* loading / hints */}
+              <div className="mt-5">
+                {loading && <div className="text-sm text-white/60">Processing…</div>}
+              </div>
+
+              {/* If already connected but user wants to explicitly continue for normal flow */}
+              {!isConnected && <div className="mt-4 text-sm text-white/60">No wallet? Install MetaMask or use WalletConnect on mobile.</div>}
             </div>
 
             {/* Corner glow */}
             <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-fuchsia-500/20 blur-3xl" />
           </div>
-
-          {/* Optional illustration on md+ */}
-          <div className="pointer-events-none absolute -left-10 -bottom-10 hidden h-28 w-28 rounded-full bg-indigo-500/20 blur-2xl md:block" />
         </div>
       </main>
+
+      {/* Profile form modal (shown when new user) */}
+      {showProfileForm && (
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* dark blurred backdrop */}
+          <div className="fixed inset-0 bg-black/75 backdrop-blur-sm" onClick={() => {}} />
+
+          <form onSubmit={submitProfile} className="relative z-10 w-full max-w-lg rounded-xl border border-white/6 bg-black/80 backdrop-blur-md p-6 shadow-2xl">
+            {/* loading overlay */}
+            {loading && (
+              <div className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-xl bg-black/60 backdrop-blur-sm">
+                <div className="h-10 w-10 animate-spin rounded-full border-4 border-t-transparent border-white/40" />
+                <div className="mt-3 text-sm font-medium text-white/85">Saving profile…</div>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold text-white">Complete your profile</h2>
+              <button
+                type="button"
+                onClick={() => setShowProfileForm(false)}
+                aria-label="Close"
+                className="rounded-full p-1 text-white/70 hover:bg-white/5 focus:outline-none"
+                disabled={loading}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="mt-4 grid gap-3">
+              <label className="text-sm text-white/90">
+                Name
+                <input
+                  required
+                  value={profile.name}
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </label>
+
+              <label className="text-sm text-white/90">
+                Username
+                <input
+                  required
+                  value={profile.username}
+                  onChange={(e) => setProfile({ ...profile, username: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </label>
+
+              <label className="text-sm text-white/90">
+                Profile picker (choose)
+                <select
+                  required
+                  value={profile.profile_picker}
+                  onChange={(e) => setProfile({ ...profile, profile_picker: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                >
+                  <option value="">Select…</option>
+                  <option value="avatar-1">Avatar 1</option>
+                  <option value="avatar-2">Avatar 2</option>
+                  <option value="upload">Upload (coming soon)</option>
+                </select>
+              </label>
+
+              <label className="text-sm text-white/90">
+                Bio
+                <textarea
+                  value={profile.bio}
+                  onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  rows={3}
+                />
+              </label>
+
+              <label className="text-sm text-white/90">
+                DOB
+                <input
+                  type="date"
+                  value={profile.dob}
+                  onChange={(e) => setProfile({ ...profile, dob: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </label>
+
+              <label className="text-sm text-white/90">
+                Binance ID (optional)
+                <input
+                  value={profile.binance_id}
+                  onChange={(e) => setProfile({ ...profile, binance_id: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </label>
+
+              <label className="text-sm text-white/90">
+                Social links (comma separated, optional)
+                <input
+                  value={profile.social_links}
+                  onChange={(e) => setProfile({ ...profile, social_links: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </label>
+
+              <label className="text-sm text-white/90">
+                Interests (comma separated, optional)
+                <input
+                  value={profile.interests}
+                  onChange={(e) => setProfile({ ...profile, interests: e.target.value })}
+                  disabled={loading}
+                  className="mt-1 w-full rounded-md bg-black/60 border border-white/10 px-3 py-2 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </label>
+
+              <div className="mt-2 flex gap-3">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className={`flex-1 rounded-md bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-medium ${loading ? 'opacity-60 cursor-not-allowed' : ''}`}
+                >
+                  Save profile
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowProfileForm(false)}
+                  className="rounded-md border border-white/10 px-4 py-2 text-white/90 bg-black/50 hover:bg-black/40"
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 }
