@@ -13,23 +13,23 @@ export default function Home() {
   const features = [
     {
       emoji: "⚒️",
-      title: "Proof of Work",
-      desc: "Turn your contributions, commits, proposals, and tasks into verifiable on-chain proofs.",
+      title: "Proof of Talent",
+      desc: "Earn verifiable NFT badges for achievements and events.",
     },
     {
       emoji: "🎨",
-      title: "Proof of Talent",
-      desc: "Showcase skills with attestations, endorsements, and soulbound credentials tied to your identity.",
+      title: "Proof of vibe",
+      desc: "Showcase creativity and social engagement through posts, likes, and challenges.",
     },
     {
       emoji: "🧩",
-      title: "Composability",
-      desc: "Plug into the wider DeSOC graph. Your data is portable, verifiable, and reusable across apps.",
+      title: "Mentor Collaboration",
+      desc: "Connect with mentors for guidance, rewards, and project opportuniti",
     },
     {
       emoji: "🛡️",
-      title: "Reputation",
-      desc: "Aggregate trust from actions, not vanity metrics. Weighted by context, timelines, and peers.",
+      title: "Gamification & Rewards",
+      desc: "Participate in contests and earn tiered NFT achievements.",
     },
     {
       emoji: "🔐",
@@ -38,8 +38,8 @@ export default function Home() {
     },
     {
       emoji: "💸",
-      title: "Bounties & Grants",
-      desc: "Fund talent with on-chain payouts linked to verified milestones and proofs of work.",
+      title: "Fraud-Proof Credentials",
+      desc: "All achievements and NFTs are verifiable on-chain, ensuring authenticity and preventing fake claims.",
     },
   ];
   const talent = [
@@ -299,37 +299,38 @@ export default function Home() {
               }}
               onAnimationComplete={() => setFollowMouse(true)} // Enable mouse-follow after entrance
             >
-              <div className="relative w-[900px] h-[800px]">
-                {/* Planet with entrance + mouse-follow */}
-                <motion.div
-                  className="relative z-10 w-full h-full rounded-full overflow-hidden"
-                  style={
-                    followMouse
-                      ? {
-                          rotateX,
-                          rotateY,
-                          x: translateX,
-                          y: translateY,
-                          perspective: 600,
-                        }
-                      : {}
-                  }
-                  initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
-                  animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                  transition={{
-                    duration: 1.5,
-                    delay: 1.6,
-                    type: "spring",
-                    stiffness: 60,
-                  }}
-                >
-                  <Image
-                    src="/images/planet.webp"
-                    alt="Planet"
-                    className="w-full h-full object-cover rounded-full"
-                    width={900}
-                    height={800}
-                  />
+             <div className="relative w-[900px] h-[800px]">
+              {/* Planet with entrance + mouse-follow */}
+              <motion.div
+                className="relative z-10 w-full h-full rounded-full overflow-hidden"
+                style={
+                  followMouse
+                    ? {
+                        rotateX,
+                        rotateY,
+                        x: translateX,
+                        y: translateY,
+                        perspective: 600,
+                      }
+                    : {}
+                }
+                initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
+                animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                transition={{
+                  duration: 1.5,
+                  delay: 1.6,
+                  type: "spring",
+                  stiffness: 60,
+                }}
+              >
+                <Image
+                  src="/images/planet.webp"
+                  alt="Planet"
+                  className="w-full h-full object-cover rounded-full"
+                  width={900}
+                  height={800}
+                />
+
                 </motion.div>
               </div>
             </motion.div>
