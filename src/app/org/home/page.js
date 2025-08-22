@@ -6,11 +6,20 @@ import { useEffect, useRef, useState } from 'react';
 export default function OrgHomePage() {
   const orgName = 'Nebula Labs';
 
+  // Header nav — trimmed
   const headerNav = [
     { label: 'Home', href: '/org/home' },
     { label: 'Credentials', href: '/org/credentials' },
     { label: 'Settings', href: '/org/settings' },
     { label: 'Messages', href: '/org/messages' },
+  ];
+
+  // Left rail data
+  const kpis = [
+    { label: 'Credentials Issued', value: '1,284' },
+    { label: 'Active Opportunities', value: '12' },
+    { label: 'Event Registrations', value: '3,905' },
+    { label: 'Verified Talent', value: '7,412' },
   ];
 
   const pastEvents = [
@@ -274,7 +283,7 @@ export default function OrgHomePage() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                <span className="text-white/80">No {data.name} skills listed in {selectedUser.name}&lsquo;s profile</span>
+                <span className="text-white/80">No {data.name} skills listed in {selectedUser.name}'s profile</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-400"></span>
@@ -285,7 +294,7 @@ export default function OrgHomePage() {
                 <span className="text-white/80">{selectedUser.title} role focuses on {selectedUser.skills[0]}-related skills</span>
               </div>
               <div className="mt-3 px-3 py-2 bg-black/40 rounded-md text-sm text-white/70 italic">
-                Note: Based on {selectedUser.name}&lsquo;s verified profile, there&apos;s no evidence of {data.name} expertise. Their verified strengths are in {selectedUser.skills.join(', ')}.
+                Note: Based on {selectedUser.name}'s verified profile, there's no evidence of {data.name} expertise. Their verified strengths are in {selectedUser.skills.join(', ')}.
               </div>
             </div>
           </div>
@@ -555,9 +564,9 @@ export default function OrgHomePage() {
             </div> */}
 
             <div className="mt-4 rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-white/[0.02] backdrop-blur-sm p-5">
-              <div className="mb-5 flex items-center justify-between">
-                <h3 className="text-xl font-medium flex items-center gap-2.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-fuchsia-400">
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-xl font-medium flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-fuchsia-400">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                     <line x1="16" y1="2" x2="16" y2="6"></line>
                     <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -567,43 +576,34 @@ export default function OrgHomePage() {
                 </h3>
                 <Link href="/org/events" className="text-sm flex items-center gap-1 text-fuchsia-300 hover:text-fuchsia-200 transition-colors">
                   View all
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="m9 18 6-6-6-6"></path>
                   </svg>
                 </Link>
               </div>
               
-              <div className="space-y-5">
+              <div className="space-y-4 max-h-[70vh] md:max-h-[calc(100vh-300px)] overflow-y-auto pr-1 pb-1 custom-scrollbar">
                 {pastEvents.map((event) => (
                   <Link href={`/org/events/${event.id}`} key={event.id}>
-                    <div className="group relative overflow-hidden rounded-xl border border-white/10 bg-black/30 hover:bg-black/40 transition-colors">
-                      {/* Event banner with gradient overlay
-                      <div className={`absolute inset-0 opacity-20 ${
-                        event.type === 'Hackathon' 
-                          ? 'bg-gradient-to-r from-fuchsia-600/40 to-indigo-600/40' 
-                          : event.type === 'Workshop'
-                            ? 'bg-gradient-to-r from-indigo-600/40 to-blue-600/40'
-                            : 'bg-gradient-to-r from-emerald-600/40 to-cyan-600/40'
-                      }`} /> */}
-                      
-                      <div className="relative p-4">
-                        {/* Event tag */}
-                        {/* <div className={`absolute top-3 right-3 rounded-md px-2.5 py-1 text-sm font-medium ${
-                          event.type === 'Hackathon' 
-                            ? 'bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30' 
-                            : event.type === 'Workshop'
-                              ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
-                              : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                        }`}>
-                          {event.type}
-                        </div> */}
-                        
+                    <div className="group relative rounded-xl border border-white/10 bg-black/30 hover:bg-black/40 transition-colors">
+                      <div className="p-4">
                         <div className="flex flex-col">
-                          <h4 className="text-xl font-semibold group-hover:text-fuchsia-200 transition-colors">{event.name}</h4>
+                          <div className="flex items-start justify-between">
+                            <h4 className="text-lg font-semibold group-hover:text-fuchsia-200 transition-colors">{event.name}</h4>
+                            <div className={`rounded-md px-2 py-0.5 text-xs font-medium ${
+                              event.type === 'Hackathon' 
+                                ? 'bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30' 
+                                : event.type === 'Workshop'
+                                  ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                                  : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                            }`}>
+                              {event.type}
+                            </div>
+                          </div>
                           
-                          <div className="mt-4 flex flex-wrap gap-6 text-base text-white/80">
-                            <div className="flex items-center gap-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80">
+                            <div className="flex items-center gap-1.5">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                 <line x1="16" y1="2" x2="16" y2="6"></line>
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -611,8 +611,8 @@ export default function OrgHomePage() {
                               </svg>
                               {event.date}
                             </div>
-                            <div className="flex items-center gap-2">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <div className="flex items-center gap-1.5">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                                 <circle cx="9" cy="7" r="4"></circle>
                                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -622,20 +622,20 @@ export default function OrgHomePage() {
                             </div>
                           </div>
                           
-                          <div className="mt-4 flex items-center justify-between">
+                          <div className="mt-3 flex items-center justify-between">
                             <div className="flex -space-x-2">
                               {[...Array(3)].map((_, i) => (
-                                <div key={i} className="h-8 w-8 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-600 p-[1px]">
+                                <div key={i} className="h-7 w-7 rounded-full bg-gradient-to-br from-fuchsia-500 to-violet-500 p-[1px]">
                                   <div className="h-full w-full rounded-full bg-black/70"></div>
                                 </div>
                               ))}
-                              <div className="ml-1.5 rounded-md bg-white/5 px-2 py-1 text-sm">
+                              <div className="ml-1 rounded-md bg-white/5 px-1.5 py-0.5 text-xs">
                                 +{parseInt(event.participants) - 3}
                               </div>
                             </div>
                             
                             <div className="group-hover:translate-x-0.5 transition-transform duration-300 text-white/80 group-hover:text-white">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 12h14"></path>
                                 <path d="m12 5 7 7-7 7"></path>
                               </svg>
@@ -648,19 +648,19 @@ export default function OrgHomePage() {
                 ))}
               </div>
               
-              {/* <div className="mt-6 pt-4 border-t border-white/10 flex justify-between items-center">
-                <div className="text-sm text-white/60">
+              <div className="mt-4 pt-3 border-t border-white/10 flex justify-between items-center">
+                <div className="text-xs text-white/60">
                   {pastEvents.length} events completed
                 </div>
-                <button className="text-sm text-fuchsia-300 hover:text-fuchsia-200 flex items-center gap-1.5">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <button className="text-xs text-fuchsia-300 hover:text-fuchsia-200 flex items-center gap-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                     <polyline points="7 10 12 15 17 10"></polyline>
                     <line x1="12" y1="15" x2="12" y2="3"></line>
                   </svg>
                   Export calendar
                 </button>
-              </div> */}
+              </div>
             </div>
           </aside>
 
@@ -907,7 +907,7 @@ export default function OrgHomePage() {
             
             {/* Header with profile info */}
             <div className="flex items-center gap-4 mb-6 bg-gradient-to-r from-black/40 via-fuchsia-950/10 to-indigo-950/10 rounded-xl p-3 border border-white/5">
-              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-fuchsia-500 to-indigo-500 p-[2px] flex-shrink-0">
+              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-fuchsia-500 to-indigo-500 p-[2px]">
                 <div className="h-full w-full rounded-full bg-black/60 flex items-center justify-center">
                   <span className="text-xl font-bold">{selectedUser.name.charAt(0)}</span>
                 </div>
@@ -1104,14 +1104,14 @@ function BaseModal({ open, onClose, id, title, children, maxWidth = 'max-w-4xl' 
 
   if (!open) return null;
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby={`${id}-title`} className="fixed inset-0 z-50 flex items-center justify-center px-4 py-6">
+    <div role="dialog" aria-modal="true" aria-labelledby={`${id}-title`} className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 overflow-hidden">
       <div className="fixed inset-0 bg-black/60 backdrop-blur-lg" onClick={onClose} aria-hidden="true" />
       <div
         ref={modalRef}
-        className={`relative z-10 w-full ${maxWidth} overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0F] shadow-[0_0_60px_rgba(139,92,246,0.25)]`}
+        className={`relative z-10 w-full ${maxWidth} rounded-2xl border border-white/10 bg-[#0B0B0F] shadow-[0_0_60px_rgba(139,92,246,0.25)] flex flex-col max-h-[90vh]`}
       >
-        {/* Header */}
-        <div className="flex items-start justify-between gap-4 border-b border-white/10 p-5">
+        {/* Header - Fixed */}
+        <div className="flex items-start justify-between gap-4 border-b border-white/10 p-5 sticky top-0 bg-[#0B0B0F] z-10">
           <h2 id={`${id}-title`} className="text-xl font-semibold">
             {title}
           </h2>
@@ -1124,65 +1124,235 @@ function BaseModal({ open, onClose, id, title, children, maxWidth = 'max-w-4xl' 
             ✕
           </button>
         </div>
-        {/* Body */}
-        <div className="p-5">{children}</div>
+        
+        {/* Body - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
+          {children}
+        </div>
       </div>
     </div>
   );
 }
 
-/* ---------- Specific Modals ---------- */
-
 function IssueCredentialModal({ open, onClose }) {
+  const [credentialType, setCredentialType] = useState('winner');
+  const [eventName, setEventName] = useState('');
+  const [winners, setWinners] = useState([{ name: '', address: '' }]);
+  const [participants, setParticipants] = useState([{ name: '', address: '' }]);
+
+  const addWinner = () => {
+    setWinners([...winners, { name: '', address: '' }]);
+  };
+
+  const addParticipant = () => {
+    setParticipants([...participants, { name: '', address: '' }]);
+  };
+
+  const updateWinner = (index, field, value) => {
+    const updatedWinners = [...winners];
+    updatedWinners[index][field] = value;
+    setWinners(updatedWinners);
+  };
+
+  const updateParticipant = (index, field, value) => {
+    const updatedParticipants = [...participants];
+    updatedParticipants[index][field] = value;
+    setParticipants(updatedParticipants);
+  };
+
+  const removeWinner = (index) => {
+    const updatedWinners = [...winners];
+    updatedWinners.splice(index, 1);
+    setWinners(updatedWinners);
+  };
+
+  const removeParticipant = (index) => {
+    const updatedParticipants = [...participants];
+    updatedParticipants.splice(index, 1);
+    setParticipants(updatedParticipants);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Process form data
+    console.log({
+      credentialType,
+      eventName,
+      winners,
+      participants
+    });
+    onClose();
+  };
+
   return (
-    <BaseModal open={open} onClose={onClose} id="issue" title="Issue Credential" maxWidth="max-w-xl">
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          // TODO: connect to issuance flow
-          onClose();
-        }}
-        className="grid gap-4"
-      >
-        <label className="text-sm">
-          <span className="sr-only">Recipient wallet or DID</span>
-          <input
-            name="recipient"
-            required
-            placeholder="0xabc... or did:pkh:..."
-            className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-          />
-          <div className="mt-1 text-xs text-white/60">Recipient wallet/DID</div>
-        </label>
-
-        <label className="text-sm">
-          <span className="sr-only">Template</span>
-          <select
-            name="template"
-            required
-            className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-          >
-            <option value="">Select template…</option>
-            <option value="hackathon-winner">Hackathon Winner (Transferable)</option>
-            <option value="contrib-verified">Contributor Verified (SBT)</option>
-          </select>
-          <div className="mt-1 text-xs text-white/60">Template</div>
-        </label>
-
-        <div className="mt-2 flex gap-3">
-          <button
-            type="submit"
-            className="flex-1 rounded-md bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400"
-          >
-            Issue now
-          </button>
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm hover:bg-black/40"
-          >
-            Cancel
-          </button>
+    <BaseModal open={open} onClose={onClose} id="issue" title="Issue Credential" maxWidth="max-w-2xl">
+      <form onSubmit={handleSubmit} className="flex flex-col">
+        <div className="flex-1">
+          {/* Event Information */}
+          <div className="space-y-4 mb-6">
+            <h3 className="text-base font-medium text-white">Event Information</h3>
+            
+            <div className="grid gap-4">
+              <label className="block">
+                <div className="mb-1.5 text-sm font-medium">Event Name</div>
+                <input
+                  type="text"
+                  value={eventName}
+                  onChange={(e) => setEventName(e.target.value)}
+                  placeholder="Enter event name"
+                  className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  required
+                />
+              </label>
+              
+              <label className="block">
+                <div className="mb-1.5 text-sm font-medium">Credential Type</div>
+                <select
+                  value={credentialType}
+                  onChange={(e) => setCredentialType(e.target.value)}
+                  className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+                  required
+                >
+                  <option value="winner">Winner Certificate (Transferable)</option>
+                  <option value="participant">Participation Certificate (SBT)</option>
+                  <option value="contributor">Contributor Badge (SBT)</option>
+                </select>
+              </label>
+            </div>
+          </div>
+          
+          {/* Winners Section */}
+          <div className="border-t border-white/10 pt-5 mb-6">
+            <h3 className="text-base font-medium text-white mb-2">Winners</h3>
+            <p className="text-sm text-white/60 mb-4">Add winners who will receive transferable credentials.</p>
+            
+            {winners.map((winner, index) => (
+              <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3 pb-3 border-b border-white/5 relative">
+                <div className="md:col-span-5">
+                  <input
+                    type="text"
+                    value={winner.name}
+                    onChange={(e) => updateWinner(index, 'name', e.target.value)}
+                    placeholder="Name"
+                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-6">
+                  <input
+                    type="text"
+                    value={winner.address}
+                    onChange={(e) => updateWinner(index, 'address', e.target.value)}
+                    placeholder="0x... or did:pkh:..."
+                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+                    required
+                  />
+                </div>
+                <div className="md:col-span-1 flex items-center justify-center">
+                  {winners.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeWinner(index)}
+                      className="text-white/60 hover:text-white"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+            
+            <button
+              type="button"
+              onClick={addWinner}
+              className="mt-1 flex items-center gap-2 text-sm text-fuchsia-300 hover:text-fuchsia-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              Add another winner
+            </button>
+          </div>
+          
+          {/* Participants Section */}
+          <div className="border-t border-white/10 pt-5 mb-6">
+            <h3 className="text-base font-medium text-white mb-2">Participants</h3>
+            <p className="text-sm text-white/60 mb-4">Add participants who will receive SBT credentials.</p>
+            
+            {participants.map((participant, index) => (
+              <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3 pb-3 border-b border-white/5">
+                <div className="md:col-span-5">
+                  <input
+                    type="text"
+                    value={participant.name}
+                    onChange={(e) => updateParticipant(index, 'name', e.target.value)}
+                    placeholder="Name"
+                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+                  />
+                </div>
+                <div className="md:col-span-6">
+                  <input
+                    type="text"
+                    value={participant.address}
+                    onChange={(e) => updateParticipant(index, 'address', e.target.value)}
+                    placeholder="0x... or did:pkh:..."
+                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+                  />
+                </div>
+                <div className="md:col-span-1 flex items-center justify-center">
+                  {participants.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeParticipant(index)}
+                      className="text-white/60 hover:text-white"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+            
+            <button
+              type="button"
+              onClick={addParticipant}
+              className="mt-1 flex items-center gap-2 text-sm text-fuchsia-300 hover:text-fuchsia-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+              Add another participant
+            </button>
+          </div>
+          
+          {/* Submit Buttons - Not fixed, part of the normal flow */}
+          <div className="border-t border-white/10 pt-4 mt-4">
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="flex-1 rounded-md bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400"
+              >
+                Issue Credentials
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm hover:bg-black/40"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
         </div>
       </form>
     </BaseModal>
@@ -1191,99 +1361,98 @@ function IssueCredentialModal({ open, onClose }) {
 
 function ProfileModal({ open, onClose, profile }) {
   if (!profile) return null;
+  
   return (
-    <BaseModal open={open} onClose={onClose} id="profile" title="Talent Profile" maxWidth="max-w-5xl">
-      {/* Solid banner (no transparency) */}
-      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0F0F15]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(236,72,153,0.18),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(99,102,241,0.18),transparent_45%),radial-gradient(circle_at_30%_80%,rgba(124,58,237,0.18),transparent_40%)]" />
-        <div className="relative p-6">
-          <div className="flex flex-col items-start gap-6 md:flex-row md:items-center">
-            <div className="relative">
-              <div className="h-24 w-24 rounded-full bg-[conic-gradient(var(--tw-gradient-stops))] from-fuchsia-500 via-violet-400 to-indigo-500 p-[3px]">
-                <div className="grid h-full w-full place-items-center rounded-full bg-black/80 text-lg font-semibold">
-                  {profile.name.split(' ')[0]}
+    <BaseModal open={open} onClose={onClose} id="profile" title="Talent Profile" maxWidth="max-w-4xl">
+      <div className="space-y-6">
+        {/* Header with profile info */}
+        <div className="flex items-center gap-4 bg-gradient-to-r from-black/40 via-fuchsia-950/10 to-indigo-950/10 rounded-xl p-4 border border-white/5">
+          <div className="h-16 w-16 rounded-full bg-gradient-to-br from-fuchsia-500 to-indigo-500 p-[2px]">
+            <div className="h-full w-full rounded-full bg-black/60 flex items-center justify-center">
+              <span className="text-xl font-bold">{profile.name.charAt(0)}</span>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-2xl font-bold flex items-center gap-2">
+              {profile.name}
+              <span className="text-xs py-0.5 px-2 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/20">
+                Verified
+              </span>
+            </h3>
+            <div className="text-white/70 text-sm">{profile.title}</div>
+            <div className="flex items-center gap-2 mt-1">
+              <span className="rounded-md border border-violet-500/20 bg-violet-500/10 px-2 py-0.5 text-sm text-violet-300">PoT {profile.pot}</span>
+              <span className="rounded-md border border-fuchsia-500/20 bg-fuchsia-500/10 px-2 py-0.5 text-sm text-fuchsia-300">PoV {profile.pov}</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Skills Section */}
+        <div>
+          <h4 className="text-lg font-medium mb-3">Skills & Expertise</h4>
+          <div className="flex flex-wrap gap-2">
+            {profile.skills.map((skill, i) => (
+              <div key={i} className="rounded-lg border border-white/10 bg-black/30 px-3 py-2 text-sm">
+                {skill}
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Achievements */}
+        <div>
+          <h4 className="text-lg font-medium mb-3">Achievements</h4>
+          <div className="space-y-2">
+            {profile.achievements.map((achievement, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <span className="h-2 w-2 rounded-full bg-violet-400 mt-1.5"></span>
+                <span className="text-white/90">{achievement}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Bio if available */}
+        {profile.bio && (
+          <div>
+            <h4 className="text-lg font-medium mb-3">About</h4>
+            <p className="text-white/80">{profile.bio}</p>
+          </div>
+        )}
+        
+        {/* GitHub info if available */}
+        {profile.github && (
+          <div>
+            <h4 className="text-lg font-medium mb-3">GitHub</h4>
+            <div className="rounded-lg border border-white/10 bg-black/30 p-3">
+              <div className="flex items-center gap-2 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/60">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                <a href={`https://${profile.github}`} target="_blank" rel="noopener noreferrer" className="text-fuchsia-300 hover:text-fuchsia-200">
+                  {profile.github}
+                </a>
+              </div>
+              {profile.contributions && (
+                <div className="mt-2 text-sm text-white/70">
+                  {profile.contributions}
                 </div>
-              </div>
-              <span className="absolute -right-1 top-2 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-black" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <div className="truncate text-2xl font-bold">{profile.name}</div>
-                <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-xs">{profile.handle}</span>
-                <span className="rounded-md border border-emerald-400/30 bg-emerald-500/10 px-2 py-0.5 text-xs text-emerald-200">
-                  PoT Verified
-                </span>
-              </div>
-              <div className="text-white/70">{profile.title}</div>
-              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-                {profile.skills.map((s) => (
-                  <span key={s} className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1">
-                    #{s}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <MiniRingSolid label="PoT" value={profile.pot} />
-              <MiniRingSolid label="PoV" value={profile.pov} />
+              )}
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Details */}
-      <div className="mt-5 grid gap-5 md:grid-cols-3">
-        <div className="md:col-span-2">
-          <div className="rounded-xl border border-white/10 bg-[#0F0F15] p-5">
-            <div className="mb-2 text-sm font-medium">Highlights</div>
-            <ul className="space-y-2 text-sm">
-              {profile.achievements.map((a, i) => (
-                <li key={i} className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
-                  <span className="text-white/80">{a}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-4 rounded-xl border border-white/10 bg-[#0F0F15] p-5">
-            <div className="mb-2 text-sm font-medium">Credentials</div>
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="rounded-lg border border-white/10 bg-black/40 p-3">SBT — Contributor Verified</div>
-              <div className="rounded-lg border border-white/10 bg-black/40 p-3">PoT — zk Winner</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="rounded-xl border border-white/10 bg-[#0F0F15] p-5">
-          <div className="text-sm font-medium">Actions</div>
-          <div className="mt-3 grid gap-2">
-            <Link
-              href={`/org/talent/${profile.id}`}
-              className="rounded-lg border border-white/10 bg-black/30 px-4 py-2 text-center text-sm hover:bg-black/40"
-            >
-              Open profile page
-            </Link>
-            <Link
-              href="/org/watchlist"
-              className="rounded-lg border border-white/10 bg-black/30 px-4 py-2 text-center text-sm hover:bg-black/40"
-            >
-              Save to watchlist
-            </Link>
-            <Link
-              href="/org/messages"
-              className="rounded-lg border border-white/10 bg-black/30 px-4 py-2 text-center text-sm hover:bg-black/40"
-            >
-              Send message
-            </Link>
-            <Link
-              href="/org/credentials/new"
-              className="rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-center text-sm font-medium"
-            >
-              Issue Credential
-            </Link>
-          </div>
+        )}
+        
+        {/* Action Buttons */}
+        <div className="border-t border-white/10 pt-5 flex flex-wrap gap-3">
+          <Link href={`/org/messages/new?to=${profile.handle}`} className="rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-medium">
+            Message
+          </Link>
+          <Link href="/org/watchlist" className="rounded-lg border border-white/10 bg-black/30 px-4 py-2 text-sm hover:bg-black/40">
+            Add to watchlist
+          </Link>
+          <Link href="/org/issue" className="rounded-lg border border-white/10 bg-black/30 px-4 py-2 text-sm hover:bg-black/40">
+            Issue credential
+          </Link>
         </div>
       </div>
     </BaseModal>
