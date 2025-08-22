@@ -12,13 +12,11 @@
     "@rainbow-me/rainbowkit": "^2.2.8",
     "@supabase/supabase-js": "^2.56.0",
     "@tanstack/react-query": "^5.85.5",
-<<<<<<< HEAD
+
     "ethers": "^6.15.0",
     "jsonwebtoken": "^9.0.2",
-=======
     "framer-motion": "^12.23.12",
     "lenis": "^1.3.8",
->>>>>>> da8d0d943b3ec16cddde19c124a1711963fa14b6
     "lucide-react": "^0.540.0",
     "next": "15.5.0",
     "react": "19.1.0",
