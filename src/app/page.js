@@ -514,7 +514,7 @@ export default function Home() {
         </section>
 
         {/* Waitlist */}
-        <section
+        {/* <section
           id="waitlist"
           className="mx-auto max-w-7xl px-6 pb-16 pt-8 md:pt-12"
         >
@@ -547,7 +547,7 @@ export default function Home() {
             </div>
             <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-fuchsia-500/20 blur-3xl" />
           </div>
-        </section>
+        </section> */}
 
         {/* FAQ */}
         {/* <section id="faq" className="mx-auto max-w-7xl px-6 pb-20">
@@ -588,28 +588,125 @@ export default function Home() {
           </div>
         </section> */}
         {/* Organization Access */}
-        <section
-          id="organization"
-          className="mx-auto max-w-7xl px-6 pb-16 pt-8 md:pt-12"
+<section
+  id="organization"
+  className="relative mx-auto max-w-7xl px-4 pb-16 pt-12"
+>
+  {/* Background Gradient Glow */}
+  <div className="absolute inset-0 -z-10 bg-gradient-to-br from-fuchsia-900/20 via-violet-900/20 to-indigo-900/20 blur-2xl opacity-70"></div>
+
+  {/* Container */}
+  <div className="relative overflow-hidden rounded-2xl border border-white/20 bg-black/40 backdrop-blur-xl shadow-2xl p-6 md:p-10">
+    
+    {/* Glow Blobs */}
+    <div className="absolute -top-20 -left-10 h-60 w-60 rounded-full bg-fuchsia-600/30 blur-2xl animate-pulse"></div>
+    <div className="absolute -bottom-20 -right-10 h-60 w-60 rounded-full bg-indigo-600/30 blur-2xl animate-pulse"></div>
+
+    {/* Hero Section */}
+    <div className="relative z-10 text-center max-w-3xl mx-auto">
+      <h3 className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-fuchsia-400 via-violet-400 to-indigo-400 drop-shadow-lg">
+        Organization Access
+      </h3>
+      <p className="mt-4 text-lg text-gray-300 leading-relaxed">
+        Verified organizations can <span className="text-fuchsia-400 font-semibold">register</span>, 
+        <span className="text-violet-400 font-semibold"> host hackathons & workshops</span>, and 
+        <span className="text-indigo-400 font-semibold"> issue NFT badges</span> as authentic{" "}
+        <span className="font-semibold text-fuchsia-300">Proof of Talent</span>.
+      </p>
+    </div>
+
+    {/* Flow with Animated Arrows */}
+    <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-8 relative">
+      
+      {/* Step 1: Register */}
+      <div className="group relative z-10 rounded-xl border border-white/10 bg-gradient-to-br from-fuchsia-600/10 to-fuchsia-900/10 p-6 text-center hover:scale-105 transition-transform duration-300 w-64">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-fuchsia-600/30 text-fuchsia-300 text-2xl shadow-lg">
+          🏢
+        </div>
+        <h4 className="text-xl font-bold text-white">Register</h4>
+        <p className="mt-2 text-sm text-gray-400">
+          Verified orgs get a unique batch ID to manage events.
+        </p>
+      </div>
+
+      {/* Arrow */}
+      <div className="hidden md:flex items-center justify-center">
+        <svg
+          className="w-12 h-12 text-fuchsia-400 animate-pulse"
+          fill="none"
+          stroke="url(#grad1)"
+          strokeWidth="2.5"
+          viewBox="0 0 48 48"
         >
-          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-indigo-900/20 via-violet-900/20 to-fuchsia-900/20 p-8 md:p-12">
-            <div className="mx-auto max-w-2xl text-center">
-              <h3 className="text-2xl font-semibold md:text-3xl">
-          Organization Access
-              </h3>
-              <p className="mt-2 text-white/70">
-          Manage your organization, teams, and members. Access advanced features for DAOs, companies, and communities.
-              </p>
-              <Link
-          href="/org"
-          className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-500 via-violet-500 to-indigo-500 px-6 py-3 font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
-              >
-          Go to Organization Portal →
-              </Link>
-            </div>
-            <div className="pointer-events-none absolute -left-10 -bottom-10 h-40 w-40 rounded-full bg-indigo-500/20 blur-3xl" />
-          </div>
-        </section>
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#f0abfc" />
+              <stop offset="100%" stopColor="#818cf8" />
+            </linearGradient>
+          </defs>
+          <path d="M8 24h28M28 12l12 12-12 12" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+
+      {/* Step 2: Create Events */}
+      <div className="group relative z-10 rounded-xl border border-white/10 bg-gradient-to-br from-violet-600/10 to-violet-900/10 p-6 text-center hover:scale-105 transition-transform duration-300 w-64">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-violet-600/30 text-violet-300 text-2xl shadow-lg">
+          🎉
+        </div>
+        <h4 className="text-xl font-bold text-white">Host Events</h4>
+        <p className="mt-2 text-sm text-gray-400">
+          Launch hackathons, workshops & competitions.
+        </p>
+      </div>
+
+      {/* Arrow */}
+      <div className="hidden md:flex items-center justify-center">
+        <svg
+          className="w-12 h-12 text-indigo-400 animate-pulse"
+          fill="none"
+          stroke="url(#grad2)"
+          strokeWidth="2.5"
+          viewBox="0 0 48 48"
+        >
+          <defs>
+            <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#818cf8" />
+              <stop offset="100%" stopColor="#38bdf8" />
+            </linearGradient>
+          </defs>
+          <path d="M8 24h28M28 12l12 12-12 12" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+
+      {/* Step 3: Distribute Badges */}
+      <div className="group relative z-10 rounded-xl border border-white/10 bg-gradient-to-br from-indigo-600/10 to-indigo-900/10 p-6 text-center hover:scale-105 transition-transform duration-300 w-64">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600/30 text-indigo-300 text-2xl shadow-lg">
+          🏅
+        </div>
+        <h4 className="text-xl font-bold text-white">NFT Badges</h4>
+        <p className="mt-2 text-sm text-gray-400">
+          Winners & participants earn verifiable Proof of Talent.
+        </p>
+      </div>
+
+    </div>
+
+    {/* Call to Action */}
+    <div className="relative z-10 mt-12 text-center">
+      <a
+        href="/org"
+        className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-fuchsia-500 via-violet-500 to-indigo-500 px-8 py-3 text-lg font-semibold text-white shadow-xl shadow-fuchsia-900/30 hover:scale-110 hover:shadow-indigo-900/30 transition-transform duration-300"
+      >
+        🚀 Register Now!
+      </a>
+      <p className="mt-3 text-sm text-gray-400">
+        Start your journey — from registration to NFT credentials.
+      </p>
+    </div>
+  </div>
+</section>
+
+
         {/* Footer */}
         <footer className="border-t border-white/10 bg-black/20">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-white/60 md:flex-row">
