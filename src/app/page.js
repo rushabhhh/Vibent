@@ -105,18 +105,19 @@ export default function Home() {
               <span className="font-semibold tracking-tight">Vibent</span>
             </Link>
             <div className="hidden items-center gap-8 text-sm text-white/80 md:flex">
-              <Link href="#features" className="hover:text-white">
-                Features
+            <Link href="#proof" className="hover:text-white">
+                Concept
               </Link>
               <Link href="#how" className="hover:text-white">
                 How it works
               </Link>
-              <Link href="#faq" className="hover:text-white">
-                FAQ
+              <Link href="#org" className="hover:text-white">
+                Organization Access
               </Link>
-              <a href="/docs" className="hover:text-white">
-                Docs
-              </a>
+              <Link href="#features" className="hover:text-white">
+                Features
+              </Link>
+              
               <Link
                 href="/auth/"
                 className="rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.02]"
@@ -176,7 +177,7 @@ export default function Home() {
               >
                 Own your reputation with{" "}
                 <span className="bg-gradient-to-r from-fuchsia-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">
-                  Proof of Work
+                  Proof of Vibe
                 </span>{" "}
                 and{" "}
                 <span className="bg-gradient-to-r from-amber-300 to-rose-300 bg-clip-text text-transparent">
@@ -515,17 +516,12 @@ export default function Home() {
 
                 <h2 className="text-3xl font-bold mb-6">
                   <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-                    Powering the Future of Web3
+                    Built on BNB: Where Proof Meets Talent
                   </span>
                 </h2>
 
                 <p className="text-white/80 mb-6 leading-relaxed">
-                  Built for high performance and low fees, BNB Smart Chain is
-                  the foundation of Vibent&apos;s credential ecosystem. With
-                  high throughput capabilities, secure infrastructure, and
-                  growing adoption, BNB Chain provides the ideal blockchain
-                  environment for your professional identity and verifiable
-                  credentials.
+                  Built for high performance and low fees, BNB Smart Chain is the foundation of modern credential-based ecosystems. With rapid block finality (~3 seconds per block), affordable gas fees (just pennies per transaction), robust security, and unmatched throughput, BNB Chain has become the leading blockchain for professional identity and verifiable credentials.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -556,7 +552,7 @@ export default function Home() {
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        Pay just pennies for most transactions
+                        Daily fees usually translate to pennies per transaction, averaging 426–534 BNB/day in August 2025.
                       </p>
                     </div>
                   </div>
@@ -587,7 +583,7 @@ export default function Home() {
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        3-second block times for rapid verification
+                        Blocks confirm in approximately 3 seconds for instant transaction verification.
                       </p>
                     </div>
                   </div>
@@ -612,13 +608,13 @@ export default function Home() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-amber-300 flex items-center gap-2">
-                        100% EVM Compatible
+                        100% EVM   Compatible
                         <span className="text-xs text-amber-300/50 font-normal">
                           [v1.1.0+]
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        Deploy existing Ethereum-based contracts
+                        Deploy existing Ethereum-based smart contracts seamlessly.
                       </p>
                     </div>
                   </div>
@@ -649,7 +645,7 @@ export default function Home() {
                         </span>
                       </h3>
                       <p className="text-sm text-white/70">
-                        Access to 1,400+ dApps and services
+                        Hosts over 5,800 decentralized applications, surpassing all other chains
                       </p>
                     </div>
                   </div>
@@ -710,7 +706,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="relative min-h-screen py-20 px-6 flex flex-col items-center justify-center overflow-hidden">
+        <section id="proof" className="relative min-h-screen py-20 px-6 flex flex-col items-center justify-center overflow-hidden">
           {/* Futuristic Background */}
           <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-black to-indigo-900">
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
@@ -829,7 +825,7 @@ export default function Home() {
 
         {/* Organization Access */}
         <section
-          id="organization"
+          id="org"
           className="relative mx-auto max-w-7xl px-4 pb-16 pt-12"
         >
           {/* Background Gradient Glow */}
