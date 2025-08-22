@@ -1135,51 +1135,82 @@ function BaseModal({ open, onClose, id, title, children, maxWidth = 'max-w-4xl' 
 }
 
 function IssueCredentialModal({ open, onClose }) {
-  const [credentialType, setCredentialType] = useState('winner');
   const [eventName, setEventName] = useState('');
-  const [winners, setWinners] = useState([{ name: '', address: '' }]);
-  const [participants, setParticipants] = useState([{ name: '', address: '' }]);
+  const [recipients, setRecipients] = useState([{ role: 'Participant', address: '' }]);
+  const fileInputRef = useRef(null);
+  const [importError, setImportError] = useState('');
 
-  const addWinner = () => {
-    setWinners([...winners, { name: '', address: '' }]);
+  const addRecipient = () => {
+    setRecipients([...recipients, { role: 'Participant', address: '' }]);
   };
 
-  const addParticipant = () => {
-    setParticipants([...participants, { name: '', address: '' }]);
+  const updateRecipient = (index, field, value) => {
+    const updatedRecipients = [...recipients];
+    updatedRecipients[index][field] = value;
+    setRecipients(updatedRecipients);
   };
 
-  const updateWinner = (index, field, value) => {
-    const updatedWinners = [...winners];
-    updatedWinners[index][field] = value;
-    setWinners(updatedWinners);
+  const removeRecipient = (index) => {
+    const updatedRecipients = [...recipients];
+    updatedRecipients.splice(index, 1);
+    setRecipients(updatedRecipients);
   };
 
-  const updateParticipant = (index, field, value) => {
-    const updatedParticipants = [...participants];
-    updatedParticipants[index][field] = value;
-    setParticipants(updatedParticipants);
-  };
-
-  const removeWinner = (index) => {
-    const updatedWinners = [...winners];
-    updatedWinners.splice(index, 1);
-    setWinners(updatedWinners);
-  };
-
-  const removeParticipant = (index) => {
-    const updatedParticipants = [...participants];
-    updatedParticipants.splice(index, 1);
-    setParticipants(updatedParticipants);
+  const handleCSVUpload = (e) => {
+    setImportError('');
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const csvData = event.target.result;
+        const lines = csvData.split('\n');
+        
+        // Skip header row and filter out empty lines
+        const entries = lines
+          .slice(1)
+          .map(line => line.trim())
+          .filter(line => line)
+          .map(line => {
+            // Extract role and address from CSV
+            const [role, address] = line.split(',').map(item => item.trim());
+            
+            // Validate role - default to Participant if not valid
+            const validRoles = ['Participant', 'Winner', 'Special mention', 'Mentor'];
+            const validRole = validRoles.includes(role) ? role : 'Participant';
+            
+            return { role: validRole, address };
+          });
+        
+        // Validate entries
+        const hasEmptyFields = entries.some(entry => !entry.address);
+        if (hasEmptyFields) {
+          setImportError('Some entries in your CSV have missing wallet addresses. Please check your file format.');
+          return;
+        }
+        
+        // Update recipients with parsed data
+        setRecipients(entries);
+        
+        // Clear the file input
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+      } catch (error) {
+        console.error("CSV parsing error:", error);
+        setImportError('Failed to parse CSV. Please ensure your file is formatted correctly with columns for role and wallet address.');
+      }
+    };
+    reader.readAsText(file);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Process form data
     console.log({
-      credentialType,
       eventName,
-      winners,
-      participants
+      recipients
     });
     onClose();
   };
@@ -1190,7 +1221,7 @@ function IssueCredentialModal({ open, onClose }) {
         <div className="flex-1">
           {/* Event Information */}
           <div className="space-y-4 mb-6">
-            <h3 className="text-base font-medium text-white">Event Information</h3>
+            {/* <h3 className="text-base font-medium text-white">Event Information</h3> */}
             
             <div className="grid gap-4">
               <label className="block">
@@ -1204,55 +1235,43 @@ function IssueCredentialModal({ open, onClose }) {
                   required
                 />
               </label>
-              
-              <label className="block">
-                <div className="mb-1.5 text-sm font-medium">Credential Type</div>
-                <select
-                  value={credentialType}
-                  onChange={(e) => setCredentialType(e.target.value)}
-                  className="w-full rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
-                  required
-                >
-                  <option value="winner">Winner Certificate (Transferable)</option>
-                  <option value="participant">Participation Certificate (SBT)</option>
-                  <option value="contributor">Contributor Badge (SBT)</option>
-                </select>
-              </label>
             </div>
           </div>
           
-          {/* Winners Section */}
+          {/* Recipients Section */}
           <div className="border-t border-white/10 pt-5 mb-6">
-            <h3 className="text-base font-medium text-white mb-2">Winners</h3>
-            <p className="text-sm text-white/60 mb-4">Add winners who will receive transferable credentials.</p>
+            <h3 className="text-base font-medium text-white mb-2">Recipients</h3>
+            <p className="text-sm text-white/60 mb-4">Add recipients who will receive credentials for this event.</p>
             
-            {winners.map((winner, index) => (
+            {recipients.map((recipient, index) => (
               <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3 pb-3 border-b border-white/5 relative">
                 <div className="md:col-span-5">
-                  <input
-                    type="text"
-                    value={winner.name}
-                    onChange={(e) => updateWinner(index, 'name', e.target.value)}
-                    placeholder="Name"
-                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
-                    required
-                  />
+                  <select
+                    value={recipient.role}
+                    onChange={(e) => updateRecipient(index, 'role', e.target.value)}
+                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+                  >
+                    <option value="Participant">Participant</option>
+                    <option value="Winner">Winner</option>
+                    <option value="Special mention">Special mention</option>
+                    <option value="Mentor">Mentor</option>
+                  </select>
                 </div>
                 <div className="md:col-span-6">
                   <input
                     type="text"
-                    value={winner.address}
-                    onChange={(e) => updateWinner(index, 'address', e.target.value)}
+                    value={recipient.address}
+                    onChange={(e) => updateRecipient(index, 'address', e.target.value)}
                     placeholder="0x... or did:pkh:..."
                     className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
                     required
                   />
                 </div>
                 <div className="md:col-span-1 flex items-center justify-center">
-                  {winners.length > 1 && (
+                  {recipients.length > 1 && (
                     <button
                       type="button"
-                      onClick={() => removeWinner(index)}
+                      onClick={() => removeRecipient(index)}
                       className="text-white/60 hover:text-white"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1267,7 +1286,7 @@ function IssueCredentialModal({ open, onClose }) {
             
             <button
               type="button"
-              onClick={addWinner}
+              onClick={addRecipient}
               className="mt-1 flex items-center gap-2 text-sm text-fuchsia-300 hover:text-fuchsia-200"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1275,67 +1294,58 @@ function IssueCredentialModal({ open, onClose }) {
                 <line x1="12" y1="8" x2="12" y2="16"></line>
                 <line x1="8" y1="12" x2="16" y2="12"></line>
               </svg>
-              Add another winner
+              Add another recipient
             </button>
           </div>
           
-          {/* Participants Section */}
+          {/* CSV Import Section */}
           <div className="border-t border-white/10 pt-5 mb-6">
-            <h3 className="text-base font-medium text-white mb-2">Participants</h3>
-            <p className="text-sm text-white/60 mb-4">Add participants who will receive SBT credentials.</p>
+            <h3 className="text-base font-medium text-white mb-2">Bulk Import</h3>
+            <p className="text-sm text-white/60 mb-4">Upload a CSV file with role and address columns to add recipients in bulk.</p>
             
-            {participants.map((participant, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3 pb-3 border-b border-white/5">
-                <div className="md:col-span-5">
-                  <input
-                    type="text"
-                    value={participant.name}
-                    onChange={(e) => updateParticipant(index, 'name', e.target.value)}
-                    placeholder="Name"
-                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
-                  />
-                </div>
-                <div className="md:col-span-6">
-                  <input
-                    type="text"
-                    value={participant.address}
-                    onChange={(e) => updateParticipant(index, 'address', e.target.value)}
-                    placeholder="0x... or did:pkh:..."
-                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
-                  />
-                </div>
-                <div className="md:col-span-1 flex items-center justify-center">
-                  {participants.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeParticipant(index)}
-                      className="text-white/60 hover:text-white"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </button>
-                  )}
-                </div>
+            <div className="flex flex-col gap-3">
+              <div className="p-3 rounded-lg bg-black/20 border border-white/10">
+                <div className="text-xs text-white/70 mb-2">Expected CSV format:</div>
+                <code className="text-xs text-white/80 block">
+                  <span className="text-fuchsia-300">Role,Address</span><br />
+                  Participant,0x71C7656EC7ab88b098defB751B7401B5f6d8976F<br />
+                  Winner,0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8<br />
+                  Special mention,did:pkh:eip155:1:0x2546BcD3c84621e976D8185a91A922aE77ECEc30<br />
+                  Mentor,0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc
+                </code>
               </div>
-            ))}
-            
-            <button
-              type="button"
-              onClick={addParticipant}
-              className="mt-1 flex items-center gap-2 text-sm text-fuchsia-300 hover:text-fuchsia-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-              </svg>
-              Add another participant
-            </button>
+              
+              <div className="flex items-center gap-2">
+                <input
+                  type="file"
+                  id="file-upload"
+                  accept=".csv"
+                  onChange={handleCSVUpload}
+                  className="hidden"
+                  ref={fileInputRef}
+                />
+                <label
+                  htmlFor="file-upload"
+                  className="flex-1 cursor-pointer rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-center font-medium transition-all hover:bg-black/40 flex items-center justify-center gap-2"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4"></path>
+                    <path d="M12 2v12"></path>
+                    <path d="M8 8h8"></path>
+                  </svg>
+                  Upload CSV File
+                </label>
+              </div>
+              
+              {importError && (
+                <div className="mt-1 text-sm text-red-400">
+                  {importError}
+                </div>
+              )}
+            </div>
           </div>
           
-          {/* Submit Buttons - Not fixed, part of the normal flow */}
+          {/* Submit Buttons */}
           <div className="border-t border-white/10 pt-4 mt-4">
             <div className="flex gap-3">
               <button
