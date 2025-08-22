@@ -8,10 +8,10 @@ export const metadata = {
 };
 
 export default function HomePage() {
-  const pov = 72; // Proof of Vibe score (static mock)
-  const pow = 64; // Proof of Work score (static mock)
+  const pov = 72;
+  const pow = 64;
 
-  // Only the items you asked for
+  // Left nav
   const featuresNav = [
     { label: 'Home', href: '/home', emoji: '🏠' },
     { label: 'Messages', href: '/messages', emoji: '💬' },
@@ -20,21 +20,24 @@ export default function HomePage() {
     { label: 'Settings', href: '/settings', emoji: '⚙' },
   ];
 
+  // Stories with avatars
   const stories = [
-    { name: 'You', you: true },
-    { name: 'Aria', color: 'from-fuchsia-400 to-indigo-400' },
-    { name: 'Kenji', color: 'from-amber-300 to-rose-400' },
-    { name: 'Mira', color: 'from-emerald-300 to-cyan-400' },
-    { name: 'Leo', color: 'from-violet-400 to-purple-600' },
-    { name: 'Zara', color: 'from-sky-300 to-indigo-500' },
-    { name: 'Omar', color: 'from-pink-300 to-rose-500' },
-    { name: 'Nia', color: 'from-lime-300 to-emerald-500' },
+    { name: 'You', you: true, img: 'https://randomuser.me/api/portraits/women/44.jpg' },
+    { name: 'Aria', img: 'https://randomuser.me/api/portraits/women/68.jpg' },
+    { name: 'Kenji', img: 'https://randomuser.me/api/portraits/men/31.jpg' },
+    { name: 'Mira', img: 'https://randomuser.me/api/portraits/women/12.jpg' },
+    { name: 'Leo', img: 'https://randomuser.me/api/portraits/men/15.jpg' },
+    { name: 'Zara', img: 'https://randomuser.me/api/portraits/women/33.jpg' },
+    { name: 'Omar', img: 'https://randomuser.me/api/portraits/men/45.jpg' },
+    { name: 'Nia', img: 'https://randomuser.me/api/portraits/women/22.jpg' },
   ];
 
+  // Posts with author avatars + media images
   const posts = [
     {
       id: 'p1',
       author: 'Aria Nguyen',
+      authorImg: 'https://randomuser.me/api/portraits/women/68.jpg',
       handle: '@arian',
       time: '2h',
       povBadge: 82,
@@ -43,12 +46,13 @@ export default function HomePage() {
         'Wrapped a milestone for the core DAO: verifiable PoW attestations for grants using viem + zk-SBTs. Code is modular and rolls into our Skill Graph.',
       skills: ['Solidity', 'Next.js', 'viem', 'zk-SNARKs'],
       mediaType: 'image',
-      mediaGradient: 'from-fuchsia-500 via-violet-500 to-indigo-500',
+      mediaUrl: 'https://images.unsplash.com/photo-1682687220591-fbd0a42d7ebd?w=1200&q=80&auto=format&fit=crop',
       stats: { likes: 128, comments: 23, shares: 11 },
     },
     {
       id: 'p2',
       author: 'Devon Park',
+      authorImg: 'https://randomuser.me/api/portraits/men/35.jpg',
       handle: '@devon',
       time: '5h',
       povBadge: 77,
@@ -57,37 +61,18 @@ export default function HomePage() {
         'Quick explainer on how our compatibility engine blends on-chain graph signals + AI embeddings for collab matching.',
       skills: ['Graph ML', 'Vector DB', 'Rust', 'BNB'],
       mediaType: 'reel',
-      mediaGradient: 'from-amber-400 via-rose-400 to-fuchsia-500',
+      mediaUrl: 'https://images.unsplash.com/photo-1707343846297-ff94c7a1125f?w=1200&q=80&auto=format&fit=crop',
       stats: { likes: 342, comments: 56, shares: 40 },
     },
   ];
 
-  const matches = [
-    { name: 'Mina K.', role: 'Product + Growth', match: 93, tag: 'Co-founder' },
-    { name: 'Raj S.', role: 'Solidity + Audits', match: 90, tag: 'Mentor' },
-    { name: 'Elio V.', role: 'Design Systems', match: 88, tag: 'Design' },
-  ];
-
-  const trendingSkills = [
-    { skill: 'Account Abstraction', delta: '+12%' },
-    { skill: 'ZK Proof Systems', delta: '+9%' },
-    { skill: 'On-chain Credentials', delta: '+7%' },
-    { skill: 'Social Graph ML', delta: '+6%' },
-  ];
-
-  const gigs = [
-    { title: 'Core Protocol Contributor', org: 'Nebula DAO', reward: '3,000 USDT', tag: 'Grant' },
-    { title: 'Community Researcher', org: 'Orbit Labs', reward: '1,250 USDT', tag: 'Bounty' },
-    { title: 'Reels Creator (Expert Content)', org: 'Vibent', reward: 'Token Rewards', tag: 'Creator' },
-  ];
-
   return (
-    <div className="min-h-screen bg-[#0B0B0F] text-white">
+    <div className="h-screen bg-[#0B0B0F] text-white overflow-hidden">
       {/* Global background — aurora + subtle noise */}
       <div className="pointer-events-none fixed inset-0 -z-10">
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[40rem] rounded-full bg-fuchsia-600/20 blur-[120px]" />
-        <div className="absolute top-32 right-0 h-72 w-[35rem] rounded-full bg-indigo-600/20 blur-[120px]" />
-        <div className="absolute bottom-0 left-0 h-72 w-[30rem] rounded-full bg-violet-600/20 blur-[120px]" />
+        <div className="aurora absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[40rem] rounded-full bg-fuchsia-600/20 blur-[120px]" />
+        <div className="aurora absolute top-32 right-0 h-72 w-[35rem] rounded-full bg-indigo-600/20 blur-[120px]" />
+        <div className="aurora absolute bottom-0 left-0 h-72 w-[30rem] rounded-full bg-violet-600/20 blur-[120px]" />
         <div
           className="absolute inset-0 opacity-[0.06] mix-blend-soft-light"
           style={{
@@ -111,7 +96,7 @@ export default function HomePage() {
               <span className="opacity-60">🔎</span>
               <input
                 type="search"
-                placeholder="Search people, skills, bounties, reels..."
+                placeholder="Search people, skills, reels..."
                 className="w-full bg-transparent outline-none placeholder:text-white/40"
               />
             </div>
@@ -135,18 +120,20 @@ export default function HomePage() {
         </div>
       </nav>
 
-      {/* Main layout */}
-      <main className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 md:grid-cols-12 md:px-6">
-        {/* Left sidebar */}
-        <aside className="hidden md:col-span-3 md:block">
+      {/* Main layout: left & right fixed; center scrolls */}
+      <main className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 md:grid-cols-12 md:px-6 h-[calc(100vh-64px)]">
+        {/* Left sidebar (sticky, non-scrolling) */}
+        <aside className="hidden md:col-span-3 md:block sticky top-4 self-start h-[calc(100vh-80px)] overflow-hidden">
           {/* Profile mini */}
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_8px_30px_rgba(0,0,0,.25)] fade-in">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-fuchsia-500 to-indigo-500 p-[2px] shadow-[0_0_30px_rgba(99,102,241,.35)]">
-                  <div className="h-full w-full rounded-full bg-black/60" />
-                </div>
-                <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-400 ring-2 ring-black" />
+                <img
+                  src="https://randomuser.me/api/portraits/women/44.jpg"
+                  alt="You"
+                  className="h-12 w-12 rounded-full object-cover border border-white/10"
+                />
+                <span className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-emerald-400 ring-2 ring-black pulse-ring" />
               </div>
               <div>
                 <div className="font-medium">You</div>
@@ -155,15 +142,15 @@ export default function HomePage() {
             </div>
 
             <div className="mt-4 grid grid-cols-3 gap-2 text-center text-xs">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2 float-slow">
                 <div className="text-lg font-semibold">1.2k</div>
                 Followers
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2 float-slow delay-150">
                 <div className="text-lg font-semibold">318</div>
                 Following
               </div>
-              <div className="rounded-xl border border-white/10 bg-white/5 p-2">
+              <div className="rounded-xl border border-white/10 bg-white/5 p-2 float-slow delay-300">
                 <div className="text-lg font-semibold">{pov}</div>
                 PoV
               </div>
@@ -171,7 +158,7 @@ export default function HomePage() {
           </div>
 
           {/* Navigation */}
-          <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
+          <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-3 shadow-[0_8px_30px_rgba(0,0,0,.25)] fade-in delay-120">
             <div className="mb-2 px-2 text-xs uppercase tracking-wider text-white/50">
               Navigation
             </div>
@@ -190,46 +177,29 @@ export default function HomePage() {
               ))}
             </ul>
           </div>
-
-          {/* Quick actions */}
-          <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
-            <div className="mb-3 text-sm font-medium">Quick Actions</div>
-            <div className="flex flex-col gap-2 text-sm">
-              <Link href="/create" className="rounded-xl border border-white/10 bg-black/30 px-3 py-2 transition hover:bg-black/40">
-                ✨ Create Post
-              </Link>
-              <Link href="/reels" className="rounded-xl border border-white/10 bg-black/30 px-3 py-2 transition hover:bg-black/40">
-                🎬 Open Reels
-              </Link>
-              <Link href="/credentials" className="rounded-xl border border-white/10 bg-black/30 px-3 py-2 transition hover:bg-black/40">
-                🪪 Mint Credential
-              </Link>
-              <Link href="/rewards" className="rounded-xl border border-white/10 bg-black/30 px-3 py-2 transition hover:bg-black/40">
-                💎 Claim Rewards
-              </Link>
-            </div>
-          </div>
         </aside>
 
-        {/* Feed */}
-        <section className="md:col-span-5">
-          {/* Stories */}
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
+        {/* Feed (ONLY this column scrolls) */}
+        <section className="md:col-span-5 h-[calc(100vh-80px)] overflow-y-auto no-scrollbar pb-24">
+          {/* Stories (horizontal, invisible scrollbar) */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_8px_30px_rgba(0,0,0,.25)] fade-in">
             <div className="mb-3 flex items-center justify-between">
               <div className="text-sm font-medium">Stories</div>
               <Link href="/reels" className="text-xs text-white/60 transition hover:text-white">
                 View all
               </Link>
             </div>
-            <div className="flex snap-x items-stretch gap-4 overflow-x-auto pb-1">
+            <div className="flex snap-x items-stretch gap-4 overflow-x-auto no-scrollbar pb-1">
               {stories.map((s, i) => (
                 <div key={s.name + i} className="snap-start">
-                  {s.you ? (
-                    <div className="flex w-20 flex-col items-center gap-2 text-center">
-                      <div className="relative h-16 w-16">
-                        <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-slate-700 to-slate-500 p-[2px]">
-                          <div className="h-full w-full rounded-full bg-black/60" />
-                        </div>
+                  <div className="flex w-20 flex-col items-center gap-2 text-center">
+                    <div className="relative h-16 w-16">
+                      <img
+                        src={s.img}
+                        alt={s.name}
+                        className="h-16 w-16 rounded-full object-cover ring-2 ring-fuchsia-500/40"
+                      />
+                      {s.you && (
                         <button
                           type="button"
                           className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 text-xs shadow-md transition hover:scale-105"
@@ -237,36 +207,30 @@ export default function HomePage() {
                         >
                           +
                         </button>
-                      </div>
-                      <span className="truncate text-xs text-white/70">Your Story</span>
+                      )}
                     </div>
-                  ) : (
-                    <div className="flex w-20 flex-col items-center gap-2">
-                      <div
-                        className={`h-16 w-16 rounded-full bg-gradient-to-tr ${s.color || ''} p-[2px]`}
-                        style={{ backgroundImage: `linear-gradient(to top right, var(--tw-gradient-stops))` }}
-                      >
-                        <div className="h-full w-full rounded-full bg-black/60 ring-2 ring-transparent" />
-                      </div>
-                      <span className="truncate text-xs text-white/70">{s.name}</span>
-                    </div>
-                  )}
+                    <span className="truncate text-xs text-white/70">{s.you ? 'Your Story' : s.name}</span>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Composer REMOVED */}
-
           {/* Feed posts */}
           <div className="mt-4 space-y-4">
-            {posts.map((p) => (
-              <article key={p.id} className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_8px_30px_rgba(0,0,0,.25)] transition hover:border-white/15">
+            {posts.map((p, i) => (
+              <article
+                key={p.id}
+                className="rounded-3xl border border-white/10 bg-white/5 p-4 shadow-[0_8px_30px_rgba(0,0,0,.25)] transition hover:border-white/15 fade-in"
+                style={{ animationDelay: `${100 + i * 120}ms` }}
+              >
                 {/* Header */}
                 <div className="flex items-start gap-3">
-                  <div className="h-11 w-11 shrink-0 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 p-[2px] shadow-[0_0_24px_rgba(16,185,129,.35)]">
-                    <div className="h-full w-full rounded-full bg-black/60" />
-                  </div>
+                  <img
+                    src={p.authorImg}
+                    alt={p.author}
+                    className="h-11 w-11 shrink-0 rounded-full object-cover border border-white/10"
+                  />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <div className="truncate font-medium">{p.author}</div>
@@ -295,14 +259,22 @@ export default function HomePage() {
 
                   {/* Media */}
                   {p.mediaType === 'image' ? (
-                    <div className={`mt-3 h-64 w-full rounded-2xl bg-gradient-to-br ${p.mediaGradient}`} />
+                    <img
+                      src={p.mediaUrl}
+                      alt="Post media"
+                      className="mt-3 h-64 w-full rounded-2xl object-cover float-slow"
+                      loading="lazy"
+                    />
                   ) : (
-                    <Link
-                      href="/reels"
-                      className={`mt-3 relative block h-[480px] w-full overflow-hidden rounded-2xl bg-gradient-to-br ${p.mediaGradient}`}
-                    >
-                      <div className="absolute inset-0 grid place-items-center">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-black/40 text-2xl backdrop-blur">
+                    <Link href="/reels" className="mt-3 relative block h-[480px] w-full overflow-hidden rounded-2xl">
+                      <img
+                        src={p.mediaUrl}
+                        alt="Reel preview"
+                        className="absolute inset-0 h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 grid place-items-center bg-black/30">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-black/50 text-2xl backdrop-blur">
                           ▶
                         </div>
                       </div>
@@ -353,10 +325,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Right sidebar — wide panel, but cards are narrow and stacked */}
-        <aside className="hidden md:col-span-4 lg:block">
+        {/* Right sidebar (sticky, non-scrolling) — kept only "Your Proof" */}
+        <aside className="hidden md:col-span-4 lg:block sticky top-4 self-start h-[calc(100vh-80px)] overflow-hidden">
           {/* Proof panel */}
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_8px_30px_rgba(0,0,0,.25)] fade-in">
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium">Your Proof</div>
               <Link href="/credentials" className="text-xs text-white/60 transition hover:text-white">
@@ -366,7 +338,7 @@ export default function HomePage() {
 
             {/* Stacked narrow cards */}
             <div className="mt-5 space-y-4">
-              {/* Proof of Vibe (narrow, centered) */}
+              {/* Proof of Vibe */}
               <div className="mx-auto w-full max-w-sm">
                 <div className="group relative overflow-hidden rounded-2xl border border-fuchsia-400/20 bg-gradient-to-br from-fuchsia-500/10 via-violet-500/10 to-indigo-500/10 p-4 shadow-[0_12px_40px_rgba(168,85,247,.15)]">
                   <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-fuchsia-600/20 blur-3xl" />
@@ -418,7 +390,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              {/* Proof of Work (narrow, centered) */}
+              {/* Proof of Work */}
               <div className="mx-auto w-full max-w-sm">
                 <div className="group relative overflow-hidden rounded-2xl border border-emerald-400/20 bg-gradient-to-br from-emerald-500/10 via-cyan-500/10 to-teal-500/10 p-4 shadow-[0_12px_40px_rgba(16,185,129,.15)]">
                   <div className="pointer-events-none absolute -top-16 -right-16 h-40 w-40 rounded-full bg-emerald-600/20 blur-3xl" />
@@ -472,70 +444,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Matches */}
-          <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
-            <div className="mb-3 text-sm font-medium">Top Matches</div>
-            <div className="space-y-3">
-              {matches.map((m) => (
-                <div key={m.name} className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-gradient-to-br from-amber-400 to-rose-500 p-[2px]">
-                    <div className="h-full w-full rounded-full bg-black/60" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center justify-between">
-                      <div className="truncate text-sm font-medium">{m.name}</div>
-                      <div className="text-xs text-white/60">{m.match}%</div>
-                    </div>
-                    <div className="truncate text-xs text-white/60">{m.role} • {m.tag}</div>
-                    <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                      <div
-                        className="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-indigo-500"
-                        style={{ width: `${m.match}%` }}
-                      />
-                    </div>
-                  </div>
-                  <Link href="/messages" className="rounded-md border border-white/10 bg-white/5 px-2 py-1 text-xs transition hover:bg-white/10">
-                    Connect
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Trending skills */}
-          <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
-            <div className="mb-3 text-sm font-medium">Trending Skills</div>
-            <div className="space-y-2 text-sm">
-              {trendingSkills.map((t) => (
-                <div key={t.skill} className="flex items-center justify-between">
-                  <span className="text-white/80">#{t.skill}</span>
-                  <span className="rounded-md border border-emerald-400/20 bg-emerald-500/10 px-2 py-0.5 text-[11px] text-emerald-200">
-                    {t.delta}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Gigs */}
-          <div className="mt-4 rounded-3xl border border-white/10 bg-white/5 p-5 shadow-[0_8px_30px_rgba(0,0,0,.25)]">
-            <div className="mb-3 text-sm font-medium">Bounties & Gigs</div>
-            <div className="space-y-3">
-              {gigs.map((g) => (
-                <div key={g.title} className="rounded-2xl border border-white/10 bg-black/30 p-3">
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm font-medium">{g.title}</div>
-                    <span className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 text-[10px]">{g.tag}</span>
-                  </div>
-                  <div className="text-xs text-white/60">{g.org}</div>
-                  <div className="mt-2 flex items-center justify-between text-xs">
-                    <span className="text-white/70">{g.reward}</span>
-                    <Link href="/opportunities" className="text-white/80 transition hover:text-white">View</Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {/* Removed: Matches, Trending Skills, Bounties & Gigs */}
         </aside>
       </main>
 
@@ -564,6 +473,47 @@ export default function HomePage() {
           </Link>
         </div>
       </nav>
+
+      {/* Plain <style> (NOT styled-jsx) — animations & invisible scrollbars */}
+      <style>{`
+        /* Invisible scrollbar */
+        .no-scrollbar::-webkit-scrollbar { width: 0; height: 0; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Aurora drift */
+        @keyframes auroraDrift {
+          0% { transform: translate3d(0,0,0) scale(1); opacity: .7; }
+          50% { transform: translate3d(10px,-6px,0) scale(1.05); opacity: .9; }
+          100% { transform: translate3d(0,0,0) scale(1); opacity: .7; }
+        }
+        .aurora { animation: auroraDrift 10s ease-in-out infinite; }
+
+        /* Card float */
+        @keyframes floatSlow {
+          0% { transform: translateY(0); }
+          50% { transform: translateY(-4px); }
+          100% { transform: translateY(0); }
+        }
+        .float-slow { animation: floatSlow 6s ease-in-out infinite; }
+        .delay-150 { animation-delay: 150ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        /* Fade-in */
+        @keyframes fadeInUp {
+          0% { opacity: 0; transform: translateY(6px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeInUp .5s ease forwards; opacity: 0; }
+        .delay-120 { animation-delay: 120ms; }
+
+        /* Pulse ring for online dot */
+        @keyframes pulseRing {
+          0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.45); }
+          70% { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+          100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+        }
+        .pulse-ring { animation: pulseRing 2s infinite; }
+      `}</style>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { WagmiProvider, useAccount, useSignMessage } from 'wagmi';
 import { bscTestnet } from 'wagmi/chains';
 import { getDefaultConfig, RainbowKitProvider, ConnectButton, darkTheme } from '@rainbow-me/rainbowkit';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
+import '@rainbow-me/rainbowkit/styles.css';
 
 const queryClient = new QueryClient();
 
@@ -169,7 +169,7 @@ function PageContent() {
       // profile saved — go to dashboard
       setShowProfileForm(false);
       setIsNew(false);
-      router.push('/org/home');
+      router.push('/home');
     } catch (err) {
       console.error(err);
       alert('Profile save error');

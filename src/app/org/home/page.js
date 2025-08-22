@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+
 
 export default function OrgHomePage() {
   const orgName = 'Nebula Labs';
@@ -23,24 +25,24 @@ export default function OrgHomePage() {
   ];
 
   const pastEvents = [
-    { 
-      id: 'EVT-001', 
-      name: 'BNB Hackathon 2025', 
-      type: 'Hackathon', 
+    {
+      id: 'EVT-001',
+      name: 'BNB Hackathon 2025',
+      type: 'Hackathon',
       date: 'June 15-18, 2025',
       participants: '385'
     },
-    { 
-      id: 'EVT-002', 
-      name: 'zk-Workshop Series', 
-      type: 'Workshop', 
+    {
+      id: 'EVT-002',
+      name: 'zk-Workshop Series',
+      type: 'Workshop',
       date: 'May 5-20, 2025',
       participants: '210'
     },
-    { 
-      id: 'EVT-003', 
-      name: 'Web3 Design Summit', 
-      type: 'Conference', 
+    {
+      id: 'EVT-003',
+      name: 'Web3 Design Summit',
+      type: 'Conference',
       date: 'April 10, 2025',
       participants: '178'
     },
@@ -58,7 +60,7 @@ export default function OrgHomePage() {
     },
     {
       id: 'msg2',
-      sender: 'Zara M.',
+      sender: 'Jill Dhandhukiya.',
       avatar: 'Z',
       avatarColor: 'from-fuchsia-500 via-violet-500 to-indigo-500',
       message: 'I\'ve submitted the final code for review.',
@@ -67,7 +69,34 @@ export default function OrgHomePage() {
     },
     {
       id: 'msg3',
-      sender: 'Kenji I.',
+      sender: 'Rushabh Rathod.',
+      avatar: 'K',
+      avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
+      message: 'Can we discuss the zkSNARK implementation?',
+      time: '1d ago',
+      unread: false
+    },
+    {
+      id: 'msg4',
+      sender: 'Diya Sarvaiya',
+      avatar: 'K',
+      avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
+      message: 'Can we discuss the zkSNARK implementation?',
+      time: '1d ago',
+      unread: false
+    },
+    {
+      id: 'msg7',
+      sender: 'Archita Sharma',
+      avatar: 'K',
+      avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
+      message: 'Can we discuss the zkSNARK implementation?',
+      time: '1d ago',
+      unread: false
+    },
+    {
+      id: 'msg5',
+      sender: 'Zara ',
       avatar: 'K',
       avatarColor: 'from-indigo-400 via-violet-500 to-fuchsia-500',
       message: 'Can we discuss the zkSNARK implementation?',
@@ -88,6 +117,7 @@ export default function OrgHomePage() {
       skills: ['Solidity', 'zk‑SNARKs', 'Viem', 'Security'],
       badges: ['PoT Verified', 'SBT Holder'],
       cover: 'from-fuchsia-500 via-violet-500 to-indigo-500',
+      bannerImage: '/images/banner1.jpg', // Add banner image path
       achievements: ['Hackathon Winner — Nebula zk 2025', 'Contributor — Auditor Guild', 'Top 1% Reels • zk Education'],
       bio: 'Senior blockchain developer specialized in zkSNARKs and smart contract security...',
       github: 'github.com/zaradev',
@@ -202,7 +232,7 @@ export default function OrgHomePage() {
   const askAiQuestion = async (e) => {
     e.preventDefault();
     if (!userQuestion.trim()) return;
-    
+
     setIsLoading(true);
     const previousResponse = aiResponse;
 
@@ -210,41 +240,41 @@ export default function OrgHomePage() {
       // Function analysis logic stays the same
       const getSkillMatch = userQuestion.toLowerCase();
       const checkForSkill = userQuestion.toLowerCase();
-      
+
       // For React rendering purposes, we'll use a different approach
       // Create a flag to identify the response type
       let responseType = 'default';
       let skillData = null;
-      
+
       // Determine the type of response needed
-      if (userQuestion.toLowerCase().includes('ml') || 
-          userQuestion.toLowerCase().includes('machine learning')) {
+      if (userQuestion.toLowerCase().includes('ml') ||
+        userQuestion.toLowerCase().includes('machine learning')) {
         responseType = 'missing-skill';
         skillData = { name: 'Machine Learning' };
       } else if (userQuestion.toLowerCase().includes('devops')) {
         responseType = 'missing-skill';
         skillData = { name: 'DevOps' };
-      } else if (userQuestion.toLowerCase().includes('experience') || 
-                 userQuestion.toLowerCase().includes('background')) {
+      } else if (userQuestion.toLowerCase().includes('experience') ||
+        userQuestion.toLowerCase().includes('background')) {
         responseType = 'experience';
-      } else if (userQuestion.toLowerCase().includes('fit') || 
-                 userQuestion.toLowerCase().includes('team')) {
+      } else if (userQuestion.toLowerCase().includes('fit') ||
+        userQuestion.toLowerCase().includes('team')) {
         responseType = 'team-fit';
       } else {
         // Check if asking about a skill in the profile
-        const skill = selectedUser.skills.find(s => 
+        const skill = selectedUser.skills.find(s =>
           userQuestion.toLowerCase().includes(s.toLowerCase())
         );
-        
+
         if (skill) {
           responseType = 'has-skill';
-          skillData = { 
+          skillData = {
             name: skill,
             index: selectedUser.skills.indexOf(skill)
           };
         }
       }
-      
+
       setTimeout(() => {
         // Instead of HTML strings, store a marker that we'll use to render the appropriate component
         setAiResponse(`${previousResponse ? previousResponse + '\n\n' : ''}**Q: ${userQuestion}**\n\n[RESPONSE_TYPE:${responseType}${skillData ? '|' + JSON.stringify(skillData) : ''}]`);
@@ -256,18 +286,18 @@ export default function OrgHomePage() {
       setAiResponse(`${previousResponse ? previousResponse + '\n\n' : ''}**Q: ${userQuestion}**\n\nSorry, there was an error processing your question. Please try again.`);
       setIsLoading(false);
     }
-};
+  };
 
   // Now we need to change how we render responses
   const renderResponse = (responseText) => {
     if (!responseText.includes('[RESPONSE_TYPE:')) return null;
-    
+
     const match = responseText.match(/\[RESPONSE_TYPE:([^|]+)(?:\|(.+))?\]/);
     if (!match) return null;
-    
+
     const type = match[1];
     const data = match[2] ? JSON.parse(match[2]) : null;
-    
+
     switch (type) {
       case 'missing-skill':
         return (
@@ -283,7 +313,7 @@ export default function OrgHomePage() {
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                <span className="text-white/80">No {data.name} skills listed in {selectedUser.name}'s profile</span>
+                <span className="text-white/80">No {data.name} skills listed in {selectedUser.name}&#39;s profile</span>
               </div>
               <div className="flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-amber-400"></span>
@@ -294,7 +324,7 @@ export default function OrgHomePage() {
                 <span className="text-white/80">{selectedUser.title} role focuses on {selectedUser.skills[0]}-related skills</span>
               </div>
               <div className="mt-3 px-3 py-2 bg-black/40 rounded-md text-sm text-white/70 italic">
-                Note: Based on {selectedUser.name}'s verified profile, there's no evidence of {data.name} expertise. Their verified strengths are in {selectedUser.skills.join(', ')}.
+                Note: Based on {selectedUser.name}&lsquo;s verified profile, there&apos;s no evidence of {data.name} expertise. Their verified strengths are in {selectedUser.skills.join(', ')}.
               </div>
             </div>
           </div>
@@ -304,7 +334,7 @@ export default function OrgHomePage() {
         const skillIndex = data.index;
         const skillLevel = skillIndex === 0 ? 'expert' : skillIndex === 1 ? 'advanced' : 'proficient';
         const skillScore = skillIndex === 0 ? 95 : skillIndex === 1 ? 85 : 75;
-        
+
         return (
           <div className="p-3 rounded-lg bg-gradient-to-br from-violet-900/30 to-indigo-900/30 border border-violet-500/20">
             <h4 className="text-base font-semibold mb-2 text-white flex items-center gap-1.5">
@@ -314,26 +344,26 @@ export default function OrgHomePage() {
               </svg>
               {data.name} Expertise Analysis
             </h4>
-            
+
             <div className="flex items-start mb-3">
-              <div className="relative h-14 w-14 rounded-full mr-3 flex-shrink-0" style={{background: `conic-gradient(#8b5cf6 ${skillScore}%, rgba(255,255,255,0.1) ${skillScore}% 100%)`}}>
+              <div className="relative h-14 w-14 rounded-full mr-3 flex-shrink-0" style={{ background: `conic-gradient(#8b5cf6 ${skillScore}%, rgba(255,255,255,0.1) ${skillScore}% 100%)` }}>
                 <div className="absolute inset-1 rounded-full bg-black/60 flex items-center justify-center">
                   <div className="text-sm font-bold text-violet-300">{skillScore}%</div>
                 </div>
               </div>
-              
+
               <div className="flex-1">
                 <div className="text-sm font-medium text-violet-300">{skillLevel.toUpperCase()} LEVEL</div>
                 <div className="text-xs text-white/70 mt-1">
-                  {skillIndex === 0 
-                    ? 'This appears to be their strongest technical skill' 
-                    : skillIndex === 1 
-                      ? 'This is one of their primary technical competencies' 
+                  {skillIndex === 0
+                    ? 'This appears to be their strongest technical skill'
+                    : skillIndex === 1
+                      ? 'This is one of their primary technical competencies'
                       : 'This is part of their broader skillset'}
                 </div>
               </div>
             </div>
-            
+
             <div className="space-y-1.5">
               <div className="flex items-start gap-2">
                 <span className="h-2 w-2 rounded-full bg-violet-400 mt-1.5"></span>
@@ -361,7 +391,7 @@ export default function OrgHomePage() {
               </svg>
               Professional Background
             </h4>
-            
+
             <div className="grid grid-cols-2 gap-2 mb-3">
               <div className="rounded-md bg-black/30 px-3 py-2">
                 <div className="text-xs text-indigo-300">Current Role</div>
@@ -372,7 +402,7 @@ export default function OrgHomePage() {
                 <div className="text-sm">PoT Score: {selectedUser.pot}/100</div>
               </div>
             </div>
-            
+
             <div className="mb-3">
               <div className="text-sm font-medium text-indigo-300 mb-1.5">Technical Strengths</div>
               <div className="flex flex-wrap gap-1.5">
@@ -381,7 +411,7 @@ export default function OrgHomePage() {
                 ))}
               </div>
             </div>
-            
+
             <div>
               <div className="text-sm font-medium text-indigo-300 mb-1.5">Notable Achievements</div>
               <div className="space-y-1">
@@ -395,7 +425,7 @@ export default function OrgHomePage() {
             </div>
           </div>
         );
-                
+
       case 'team-fit':
         return (
           <div className="p-3 rounded-lg bg-gradient-to-br from-fuchsia-900/30 to-pink-900/30 border border-fuchsia-500/20">
@@ -408,14 +438,14 @@ export default function OrgHomePage() {
               </svg>
               Team Fit Analysis
             </h4>
-            
+
             <div className="flex items-start mb-3">
-              <div className="relative h-14 w-14 rounded-full mr-3 flex-shrink-0" style={{background: `conic-gradient(#d946ef ${selectedUser.pov}%, rgba(255,255,255,0.1) ${selectedUser.pov}% 100%)`}}>
+              <div className="relative h-14 w-14 rounded-full mr-3 flex-shrink-0" style={{ background: `conic-gradient(#d946ef ${selectedUser.pov}%, rgba(255,255,255,0.1) ${selectedUser.pov}% 100%)` }}>
                 <div className="absolute inset-1 rounded-full bg-black/60 flex items-center justify-center">
                   <div className="text-sm font-bold text-fuchsia-300">{selectedUser.pov}%</div>
                 </div>
               </div>
-              
+
               <div className="flex-1">
                 <div className="text-sm font-medium text-fuchsia-300">COLLABORATION POTENTIAL</div>
                 <div className="text-xs text-white/70 mt-1">
@@ -423,7 +453,7 @@ export default function OrgHomePage() {
                 </div>
               </div>
             </div>
-            
+
             <div className="space-y-1.5">
               <div className="flex items-start gap-2">
                 <span className="h-2 w-2 rounded-full bg-fuchsia-400 mt-1.5"></span>
@@ -450,7 +480,7 @@ export default function OrgHomePage() {
               </svg>
               Talent Analysis
             </h4>
-            
+
             <div className="grid grid-cols-2 gap-2 mb-3">
               <div className="rounded-md bg-black/30 px-3 py-2">
                 <div className="text-xs text-violet-300">Professional Profile</div>
@@ -461,18 +491,18 @@ export default function OrgHomePage() {
                 <div className="text-sm">{selectedUser.skills.slice(0, 2).join(', ')}</div>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-3 mb-3">
               <div className="rounded-md bg-black/30 flex-1 px-3 py-2">
                 <div className="text-xs text-violet-300">Technical Standing</div>
-                <div className="text-sm">Top {100-selectedUser.pot}% (PoT {selectedUser.pot}/100)</div>
+                <div className="text-sm">Top {100 - selectedUser.pot}% (PoT {selectedUser.pot}/100)</div>
               </div>
               <div className="rounded-md bg-black/30 flex-1 px-3 py-2">
                 <div className="text-xs text-violet-300">Team Compatibility</div>
                 <div className="text-sm">{selectedUser.pov > 80 ? 'Excellent' : 'Strong'} (PoV {selectedUser.pov}/100)</div>
               </div>
             </div>
-            
+
             <div className="flex items-start gap-2">
               <span className="h-2 w-2 rounded-full bg-violet-400 mt-1.5"></span>
               <span className="text-white/80">{selectedUser.name} brings valuable skills to any project involving {selectedUser.skills[0]}</span>
@@ -536,18 +566,12 @@ export default function OrgHomePage() {
             >
               Issue Credential
             </button>
-            {/* <Link
-              href="/org/messages"
-              className="hidden rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-base hover:bg-white/10 md:inline-flex"
-            >
-              Messages
-            </Link> */}
           </div>
         </div>
       </nav>
 
       {/* Main */}
-      <main className="mx-auto max-w-7xl px-4 py-8 md:px-6 md:py-10">
+      <main className="mx-auto px-4 py-8 md:py-10">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           {/* Left rail: KPIs + Recent Issuance */}
           <aside className="md:col-span-3">
@@ -581,7 +605,7 @@ export default function OrgHomePage() {
                   </svg>
                 </Link>
               </div>
-              
+
               <div className="space-y-4 max-h-[70vh] md:max-h-[calc(100vh-300px)] overflow-y-auto pr-1 pb-1 custom-scrollbar">
                 {pastEvents.map((event) => (
                   <Link href={`/org/events/${event.id}`} key={event.id}>
@@ -590,17 +614,16 @@ export default function OrgHomePage() {
                         <div className="flex flex-col">
                           <div className="flex items-start justify-between">
                             <h4 className="text-lg font-semibold group-hover:text-fuchsia-200 transition-colors">{event.name}</h4>
-                            <div className={`rounded-md px-2 py-0.5 text-xs font-medium ${
-                              event.type === 'Hackathon' 
-                                ? 'bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30' 
+                            <div className={`rounded-md px-2 py-0.5 text-xs font-medium ${event.type === 'Hackathon'
+                                ? 'bg-fuchsia-500/20 text-fuchsia-300 border border-fuchsia-500/30'
                                 : event.type === 'Workshop'
                                   ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
                                   : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                            }`}>
+                              }`}>
                               {event.type}
                             </div>
                           </div>
-                          
+
                           <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-white/80">
                             <div className="flex items-center gap-1.5">
                               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -621,7 +644,7 @@ export default function OrgHomePage() {
                               {event.participants} attendees
                             </div>
                           </div>
-                          
+
                           <div className="mt-3 flex items-center justify-between">
                             <div className="flex -space-x-2">
                               {[...Array(3)].map((_, i) => (
@@ -633,7 +656,7 @@ export default function OrgHomePage() {
                                 +{parseInt(event.participants) - 3}
                               </div>
                             </div>
-                            
+
                             <div className="group-hover:translate-x-0.5 transition-transform duration-300 text-white/80 group-hover:text-white">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M5 12h14"></path>
@@ -647,7 +670,7 @@ export default function OrgHomePage() {
                   </Link>
                 ))}
               </div>
-              
+
               <div className="mt-4 pt-3 border-t border-white/10 flex justify-between items-center">
                 <div className="text-xs text-white/60">
                   {pastEvents.length} events completed
@@ -681,7 +704,17 @@ export default function OrgHomePage() {
                 <div key={p.id} className="reel-card snap-start">
                   <article className="relative h-[72vh] overflow-hidden rounded-3xl border border-white/10 bg-[#0C0C12]">
                     {/* Cover */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${p.cover} opacity-20`} />
+                    <div className="absolute inset-0">
+                      <Image
+                        src={p.bannerImage || '/images/default-banner.jpg'} // Fallback to default banner
+                        alt={`${p.name}'s banner`}
+                        fill
+                        className="object-cover opacity-20"
+                        priority
+                      />
+                      {/* Add a gradient overlay */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${p.cover} opacity-30 mix-blend-overlay`} />
+                    </div>
                     {/* Content */}
                     <div className="relative grid h-full grid-rows-[auto_1fr_auto] p-6">
                       {/* Top: identity */}
@@ -810,31 +843,7 @@ export default function OrgHomePage() {
           {/* Right: Quick actions + Insights */}
           <aside className="md:col-span-3">
             <div className="space-y-6">
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-medium">Quick actions</h3>
-                <div className="mt-4 grid gap-3">
-                  <button
-                    onClick={() => setIssueOpen(true)}
-                    className="w-full rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium"
-                  >
-                    Issue Credential
-                  </button>
-                  <Link
-                    href="/org/templates"
-                    className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-center text-sm hover:bg-black/30"
-                  >
-                    Manage templates
-                  </Link>
-                  {/* <Link
-                    href="/org/opportunities"
-                    className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-3 text-center text-sm hover:bg-black/30"
-                  >
-                    Manage opportunities
-                  </Link> */}
-                </div>
-              </div>
-
-              {/* Messages */}
+              {/* Messages section moved to top */}
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-medium">Messages</h3>
@@ -842,7 +851,7 @@ export default function OrgHomePage() {
                     View all
                   </Link>
                 </div>
-                
+
                 <div className="space-y-3">
                   {recentMessages.map((msg) => (
                     <Link href={`/org/messages/${msg.id}`} key={msg.id} className="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors group">
@@ -851,7 +860,7 @@ export default function OrgHomePage() {
                           {msg.avatar}
                         </div>
                       </div>
-                      
+
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center justify-between">
                           <div className="font-medium text-sm flex items-center gap-2">
@@ -869,10 +878,10 @@ export default function OrgHomePage() {
                     </Link>
                   ))}
                 </div>
-                
+
                 <div className="mt-3 pt-3 border-t border-white/10">
-                  <Link 
-                    href="/org/messages/new" 
+                  <Link
+                    href="/org/messages/new"
                     className="flex items-center justify-center gap-2 w-full text-sm text-fuchsia-300 hover:text-fuchsia-200 py-1.5"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -896,7 +905,7 @@ export default function OrgHomePage() {
       {showAiSummary && selectedUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
           <div className="relative max-w-3xl w-full max-h-[90vh] overflow-auto rounded-2xl border border-white/10 bg-[#0B0B0F] p-6">
-            <button 
+            <button
               onClick={() => setShowAiSummary(false)}
               className="absolute top-4 right-4 text-white/60 hover:text-white"
             >
@@ -904,7 +913,7 @@ export default function OrgHomePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            
+
             {/* Header with profile info */}
             <div className="flex items-center gap-4 mb-6 bg-gradient-to-r from-black/40 via-fuchsia-950/10 to-indigo-950/10 rounded-xl p-3 border border-white/5">
               <div className="h-16 w-16 rounded-full bg-gradient-to-br from-fuchsia-500 to-indigo-500 p-[2px]">
@@ -926,7 +935,7 @@ export default function OrgHomePage() {
                 </div>
               </div>
             </div>
-            
+
             {/* AI Analysis Content */}
             <div className="prose prose-invert max-w-none">
               {isLoading ? (
@@ -954,7 +963,7 @@ export default function OrgHomePage() {
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="col-span-2 lg:col-span-1 rounded-xl bg-gradient-to-br from-fuchsia-900/20 to-pink-900/20 border border-fuchsia-500/20 p-4">
                       <div className="text-sm font-medium text-fuchsia-300 mb-2 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -969,12 +978,12 @@ export default function OrgHomePage() {
                           <div className="text-violet-300 font-bold">{selectedUser.pot}/100</div>
                         </div>
                         <div className="rounded-md bg-white/5 px-3 py-1.5 flex items-center">
-                          <div className="font-medium mr-2">PoV:</div> 
+                          <div className="font-medium mr-2">PoV:</div>
                           <div className="text-fuchsia-300 font-bold">{selectedUser.pov}/100</div>
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="col-span-2 rounded-xl bg-gradient-to-br from-indigo-900/20 to-cyan-900/20 border border-indigo-500/20 p-4">
                       <div className="text-sm font-medium text-indigo-300 mb-2 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -992,7 +1001,7 @@ export default function OrgHomePage() {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* No text summary, just show Q&A Section if available */}
                   {aiResponse && aiResponse.includes('Q:') && (
                     <div className="mt-6 space-y-4">
@@ -1019,7 +1028,7 @@ export default function OrgHomePage() {
                 </div>
               )}
             </div>
-            
+
             {/* Ask section */}
             <div className="mt-6 pt-4 border-t border-white/10">
               <h4 className="text-base font-semibold mb-3 flex items-center gap-2">
@@ -1124,7 +1133,7 @@ function BaseModal({ open, onClose, id, title, children, maxWidth = 'max-w-4xl' 
             ✕
           </button>
         </div>
-        
+
         {/* Body - Scrollable */}
         <div className="flex-1 overflow-y-auto p-5 custom-scrollbar">
           {children}
@@ -1160,13 +1169,13 @@ function IssueCredentialModal({ open, onClose }) {
     setImportError('');
     const file = e.target.files[0];
     if (!file) return;
-    
+
     const reader = new FileReader();
     reader.onload = (event) => {
       try {
         const csvData = event.target.result;
         const lines = csvData.split('\n');
-        
+
         // Skip header row and filter out empty lines
         const entries = lines
           .slice(1)
@@ -1175,24 +1184,24 @@ function IssueCredentialModal({ open, onClose }) {
           .map(line => {
             // Extract role and address from CSV
             const [role, address] = line.split(',').map(item => item.trim());
-            
+
             // Validate role - default to Participant if not valid
             const validRoles = ['Participant', 'Winner', 'Special mention', 'Mentor'];
             const validRole = validRoles.includes(role) ? role : 'Participant';
-            
+
             return { role: validRole, address };
           });
-        
+
         // Validate entries
         const hasEmptyFields = entries.some(entry => !entry.address);
         if (hasEmptyFields) {
           setImportError('Some entries in your CSV have missing wallet addresses. Please check your file format.');
           return;
         }
-        
+
         // Update recipients with parsed data
         setRecipients(entries);
-        
+
         // Clear the file input
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
@@ -1222,7 +1231,7 @@ function IssueCredentialModal({ open, onClose }) {
           {/* Event Information */}
           <div className="space-y-4 mb-6">
             {/* <h3 className="text-base font-medium text-white">Event Information</h3> */}
-            
+
             <div className="grid gap-4">
               <label className="block">
                 <div className="mb-1.5 text-sm font-medium">Event Name</div>
@@ -1237,12 +1246,12 @@ function IssueCredentialModal({ open, onClose }) {
               </label>
             </div>
           </div>
-          
+
           {/* Recipients Section */}
           <div className="border-t border-white/10 pt-5 mb-6">
             <h3 className="text-base font-medium text-white mb-2">Recipients</h3>
             <p className="text-sm text-white/60 mb-4">Add recipients who will receive credentials for this event.</p>
-            
+
             {recipients.map((recipient, index) => (
               <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3 pb-3 border-b border-white/5 relative">
                 <div className="md:col-span-5">
@@ -1283,7 +1292,7 @@ function IssueCredentialModal({ open, onClose }) {
                 </div>
               </div>
             ))}
-            
+
             <button
               type="button"
               onClick={addRecipient}
@@ -1297,12 +1306,12 @@ function IssueCredentialModal({ open, onClose }) {
               Add another recipient
             </button>
           </div>
-          
+
           {/* CSV Import Section */}
           <div className="border-t border-white/10 pt-5 mb-6">
             <h3 className="text-base font-medium text-white mb-2">Bulk Import</h3>
             <p className="text-sm text-white/60 mb-4">Upload a CSV file with role and address columns to add recipients in bulk.</p>
-            
+
             <div className="flex flex-col gap-3">
               <div className="p-3 rounded-lg bg-black/20 border border-white/10">
                 <div className="text-xs text-white/70 mb-2">Expected CSV format:</div>
@@ -1314,7 +1323,7 @@ function IssueCredentialModal({ open, onClose }) {
                   Mentor,0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc
                 </code>
               </div>
-              
+
               <div className="flex items-center gap-2">
                 <input
                   type="file"
@@ -1329,14 +1338,14 @@ function IssueCredentialModal({ open, onClose }) {
                   className="flex-1 cursor-pointer rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-center font-medium transition-all hover:bg-black/40 flex items-center justify-center gap-2"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4"></path>
+                    <path d="M16 16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2v-4"></path>
                     <path d="M12 2v12"></path>
                     <path d="M8 8h8"></path>
                   </svg>
                   Upload CSV File
                 </label>
               </div>
-              
+
               {importError && (
                 <div className="mt-1 text-sm text-red-400">
                   {importError}
@@ -1344,7 +1353,7 @@ function IssueCredentialModal({ open, onClose }) {
               )}
             </div>
           </div>
-          
+
           {/* Submit Buttons */}
           <div className="border-t border-white/10 pt-4 mt-4">
             <div className="flex gap-3">
@@ -1371,7 +1380,7 @@ function IssueCredentialModal({ open, onClose }) {
 
 function ProfileModal({ open, onClose, profile }) {
   if (!profile) return null;
-  
+
   return (
     <BaseModal open={open} onClose={onClose} id="profile" title="Talent Profile" maxWidth="max-w-4xl">
       <div className="space-y-6">
@@ -1396,7 +1405,7 @@ function ProfileModal({ open, onClose, profile }) {
             </div>
           </div>
         </div>
-        
+
         {/* Skills Section */}
         <div>
           <h4 className="text-lg font-medium mb-3">Skills & Expertise</h4>
@@ -1408,7 +1417,7 @@ function ProfileModal({ open, onClose, profile }) {
             ))}
           </div>
         </div>
-        
+
         {/* Achievements */}
         <div>
           <h4 className="text-lg font-medium mb-3">Achievements</h4>
@@ -1421,7 +1430,7 @@ function ProfileModal({ open, onClose, profile }) {
             ))}
           </div>
         </div>
-        
+
         {/* Bio if available */}
         {profile.bio && (
           <div>
@@ -1429,7 +1438,7 @@ function ProfileModal({ open, onClose, profile }) {
             <p className="text-white/80">{profile.bio}</p>
           </div>
         )}
-        
+
         {/* GitHub info if available */}
         {profile.github && (
           <div>
@@ -1451,7 +1460,7 @@ function ProfileModal({ open, onClose, profile }) {
             </div>
           </div>
         )}
-        
+
         {/* Action Buttons */}
         <div className="border-t border-white/10 pt-5 flex flex-wrap gap-3">
           <Link href={`/org/messages/new?to=${profile.handle}`} className="rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-2 text-sm font-medium">
