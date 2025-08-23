@@ -165,9 +165,48 @@ export default function Home() {
             </div>
           </div>
         </nav>
-        {/* hero section */}
+        {/* hero section - enhanced with space animations and 3D elements */}
         <div className="min-h-screen bg-[#0B0B0F] text-white">
           <header className="relative flex min-h-screen items-center overflow-hidden px-6 md:px-16">
+            {/* Space background with animated stars */}
+            <div className="absolute inset-0 overflow-hidden">
+              <div className="stars-container absolute inset-0">
+                {[...Array(200)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="star"
+                    style={{
+                      top: `${Math.random() * 100}%`,
+                      left: `${Math.random() * 100}%`,
+                      width: `${Math.random() * 2 + 1}px`,
+                      height: `${Math.random() * 2 + 1}px`,
+                      animationDelay: `${Math.random() * 10}s`,
+                      animationDuration: `${Math.random() * 10 + 10}s`,
+                    }}
+                  ></div>
+                ))}
+              </div>
+
+              {/* Animated nebula elements */}
+              <div className="absolute top-1/3 -left-20 h-[400px] w-[400px] rounded-full bg-indigo-900/20 blur-[80px] animate-float-slow"></div>
+              <div className="absolute bottom-1/4 right-1/4 h-[300px] w-[300px] rounded-full bg-fuchsia-900/20 blur-[70px] animate-float-slow-reverse"></div>
+              <div className="absolute top-2/3 left-1/3 h-[200px] w-[200px] rounded-full bg-violet-800/20 blur-[60px] animate-pulse-very-slow"></div>
+
+              {/* Shooting stars */}
+              {[...Array(5)].map((_, i) => (
+                <div
+                  key={i}
+                  className="shooting-star"
+                  style={{
+                    top: `${Math.random() * 70}%`,
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 15 + 5}s`,
+                    animationDuration: `${Math.random() * 2 + 2}s`,
+                  }}
+                ></div>
+              ))}
+            </div>
+
             {/* Left content */}
             <motion.div
               className="relative z-10 max-w-xl"
@@ -180,19 +219,23 @@ export default function Home() {
                 delay: 0.2,
               }}
             >
-              {/* BNB Chain Badge */}
+              {/* BNB Chain Badge - now with animation */}
               <motion.div
                 className="mb-4 inline-flex items-center gap-4 rounded-full border border-amber-400/20 bg-gradient-to-r from-amber-900/20 to-amber-700/10 px-3 py-1 text-sm text-amber-300"
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 15px rgba(245, 158, 11, 0.5)",
+                }}
               >
                 <Image
                   src="/images/icon.png"
                   alt="BNB Chain"
                   width={30}
                   height={30}
-                  className="h-6 w-6"
+                  className="h-6 w-6 animate-spin-very-slow"
                 />
                 Powered by BNB Smart Chain
               </motion.div>
@@ -202,6 +245,7 @@ export default function Home() {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
+                whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
               >
                 <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 DeSOC, verified by your work — not your clout
@@ -214,11 +258,11 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: 0.8 }}
               >
                 Own your reputation with{" "}
-                <span className="bg-gradient-to-r from-fuchsia-400 via-violet-400 to-indigo-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-fuchsia-300 via-violet-300 to-indigo-300 bg-clip-text text-transparent font-extrabold">
                   Proof of Vibe
                 </span>{" "}
                 and{" "}
-                <span className="bg-gradient-to-r from-amber-300 to-rose-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-amber-200 to-rose-300 bg-clip-text text-transparent font-extrabold">
                   Proof of Talent
                 </span>
               </motion.h1>
@@ -240,53 +284,59 @@ export default function Home() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, delay: 1.2 }}
               >
-                <Link
-                  href="/auth"
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 font-medium shadow-lg shadow-fuchsia-900/20 transition hover:scale-[1.05]"
-                >
-                  Start Now
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/auth"
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-6 py-3 font-medium shadow-lg shadow-fuchsia-900/20 transition relative group overflow-hidden"
                   >
-                    <path
-                      d="M4.16669 10H15.8334"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M10 4.16669L15.8333 10L10 15.8334"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Link>
-                <Link
-                  href="/demo"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-medium text-white/90 transition hover:bg-white/10"
-                >
-                  Explore Demo
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-indigo-500/0 via-white/20 to-indigo-500/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></span>
+                    <span className="relative z-10">Start Now</span>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="relative z-10"
+                    >
+                      <path
+                        d="M4.16669 10H15.8334"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M10 4.16669L15.8333 10L10 15.8334"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
+                  <Link
+                    href="/demo"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-medium text-white/90 transition hover:bg-white/10 backdrop-blur-sm"
                   >
-                    <path d="M5 3L19 12L5 21V3Z" fill="currentColor" />
-                  </svg>
-                </Link>
+                    Explore Demo
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M5 3L19 12L5 21V3Z" fill="currentColor" />
+                    </svg>
+                  </Link>
+                </motion.div>
               </motion.div>
             </motion.div>
 
-            {/* Right planet */}
+            {/* Right planet - Enhanced 3D effect */}
             <motion.div
               className="absolute right-[-25%] top-1/2 hidden -translate-y-1/2 md:flex"
               initial={{ scale: 0, opacity: 0 }}
@@ -297,40 +347,69 @@ export default function Home() {
                 type: "spring",
                 stiffness: 70,
               }}
-              onAnimationComplete={() => setFollowMouse(true)} // Enable mouse-follow after entrance
             >
-             <div className="relative w-[900px] h-[800px]">
-              {/* Planet with entrance + mouse-follow */}
-              <motion.div
-                className="relative z-10 w-full h-full rounded-full overflow-hidden"
-                style={
-                  followMouse
-                    ? {
-                        rotateX,
-                        rotateY,
-                        x: translateX,
-                        y: translateY,
-                        perspective: 600,
-                      }
-                    : {}
-                }
-                initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
-                animate={{ rotate: 0, scale: 1, opacity: 1 }}
-                transition={{
-                  duration: 1.5,
-                  delay: 1.6,
-                  type: "spring",
-                  stiffness: 60,
-                }}
-              >
-                <Image
-                  src="/images/planet.webp"
-                  alt="Planet"
-                  className="w-full h-full object-cover rounded-full"
-                  width={900}
-                  height={800}
-                />
+              <div className="relative w-[900px] h-[800px]">
+                {/* 3D planet without mouse tracking */}
+                <motion.div
+                  className="relative z-10 w-full h-full rounded-full overflow-hidden"
+                  initial={{ rotate: -90, scale: 0.5, opacity: 0 }}
+                  animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                  transition={{
+                    duration: 1.5,
+                    delay: 1.6,
+                    type: "spring",
+                    stiffness: 60,
+                  }}
+                >
+                  {/* Glow effect behind planet */}
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-violet-500/30 via-fuchsia-500/30 to-indigo-500/30 blur-xl transform scale-110 animate-pulse-slow"></div>
 
+                  {/* Planet image with 3D layers */}
+                  <div className="relative w-full h-full rounded-full overflow-hidden">
+                    {/* Base planet */}
+                    <Image
+                      src="/images/planet.webp"
+                      alt="Planet"
+                      className="w-full h-full object-cover rounded-full"
+                      width={900}
+                      height={800}
+                    />
+
+                    {/* Holographic overlay effect */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo-500/10 to-transparent opacity-70 mix-blend-overlay rounded-full"></div>
+
+                    {/* Grid pattern overlay */}
+                    <div className="absolute inset-0 grid-pattern opacity-30 mix-blend-overlay rounded-full"></div>
+
+                    {/* Scanning light effect */}
+                    <div className="absolute inset-0 h-full w-full rounded-full">
+                      <div className="absolute top-0 left-0 w-full h-[20%] bg-gradient-to-b from-violet-300/20 to-transparent transform translate-y-0 animate-scan"></div>
+                    </div>
+                  </div>
+
+                  {/* Orbiting satellites/moons */}
+                  <div className="absolute inset-0 w-full h-full rounded-full">
+                    <div className="absolute satellite-orbit">
+                      <div className="satellite bg-gradient-to-r from-amber-300 to-amber-500 animate-pulse-slow"></div>
+                    </div>
+                    <div className="absolute satellite-orbit2">
+                      <div className="satellite2 bg-gradient-to-r from-fuchsia-300 to-fuchsia-500 animate-pulse-slow"></div>
+                    </div>
+                  </div>
+
+                  {/* Data points floating around planet */}
+                  {[...Array(12)].map((_, i) => (
+                    <div
+                      key={`data-point-${i}`}
+                      className="absolute w-1.5 h-1.5 rounded-full bg-white/80 data-point"
+                      style={{
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animationDelay: `${Math.random() * 5}s`,
+                        animationDuration: `${Math.random() * 10 + 10}s`,
+                      }}
+                    ></div>
+                  ))}
                 </motion.div>
               </div>
             </motion.div>
@@ -566,7 +645,7 @@ export default function Home() {
                 </div>
 
                 <h2 className="text-3xl font-bold mb-6">
-                  <span className="bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-amber-300 to-rose-300 bg-clip-text text-transparent">
                     Built on BNB: Where Proof Meets Talent
                   </span>
                 </h2>
@@ -1242,6 +1321,174 @@ export default function Home() {
 
         .animate-scanner {
           animation: scanner 3s linear infinite;
+        }
+
+        /* Stars animation */
+        .stars-container {
+          perspective: 500px;
+        }
+
+        .star {
+          position: absolute;
+          background-color: white;
+          border-radius: 50%;
+          opacity: 0.7;
+          animation: twinkle;
+        }
+
+        @keyframes twinkle {
+          0%,
+          100% {
+            opacity: 0.7;
+            transform: scale(1);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.3);
+          }
+        }
+
+        /* Shooting star animation */
+        .shooting-star {
+          position: absolute;
+          width: 100px;
+          height: 1px;
+          background: linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0.8),
+            rgba(255, 255, 255, 0)
+          );
+          transform: rotate(-45deg);
+          animation: shooting-star;
+        }
+
+        @keyframes shooting-star {
+          0% {
+            transform: translateX(0) translateY(0) rotate(-45deg);
+            opacity: 1;
+          }
+          70% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateX(-500px) translateY(500px) rotate(-45deg);
+            opacity: 0;
+          }
+        }
+
+        /* Grid pattern for planet */
+        .grid-pattern {
+          background-image: linear-gradient(
+              rgba(255, 255, 255, 0.1) 1px,
+              transparent 1px
+            ),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+          background-size: 20px 20px;
+        }
+
+        /* Satellite orbits */
+        .satellite-orbit {
+          width: 130%;
+          height: 130%;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          top: -15%;
+          left: -15%;
+          transform: rotate(-20deg);
+          animation: orbit 20s linear infinite;
+        }
+
+        .satellite-orbit2 {
+          width: 110%;
+          height: 140%;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          top: -20%;
+          left: -5%;
+          transform: rotate(30deg);
+          animation: orbit2 15s linear infinite;
+        }
+
+        .satellite {
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          position: absolute;
+          top: 20%;
+          left: 0;
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .satellite2 {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          position: absolute;
+          top: 70%;
+          left: 0;
+          box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+        }
+
+        @keyframes orbit {
+          0% {
+            transform: rotate(-20deg);
+          }
+          100% {
+            transform: rotate(340deg);
+          }
+        }
+
+        @keyframes orbit2 {
+          0% {
+            transform: rotate(30deg);
+          }
+          100% {
+            transform: rotate(390deg);
+          }
+        }
+
+        /* Data points animation */
+        .data-point {
+          animation: data-point-float;
+        }
+
+        @keyframes data-point-float {
+          0% {
+            transform: scale(1);
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            transform: scale(0);
+            opacity: 0;
+          }
+        }
+
+        /* Scanning effect animation */
+        @keyframes scan {
+          0% {
+            transform: translateY(-100%);
+            opacity: 0.7;
+          }
+          100% {
+            transform: translateY(500%);
+            opacity: 0;
+          }
+        }
+
+        .animate-scan {
+          animation: scan 4s ease-in-out infinite;
+        }
+
+        /* Additional helper classes */
+        .perspective-1000 {
+          perspective: 1000px;
         }
       `}</style>
     </>
