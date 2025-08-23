@@ -571,7 +571,11 @@ export default function OrgHomePage() {
       </nav>
 
       {/* Main */}
+<<<<<<< HEAD
+      <main className="mx-auto px-4 py-8 md:py-10"> 
+=======
       <main className="mx-auto px-4 py-8 md:py-10">
+>>>>>>> a115a8c940f7b723d718e1ccfc7dad5ffefc92d1
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           {/* Left rail: KPIs + Recent Issuance */}
           <aside className="md:col-span-3">
@@ -842,6 +846,18 @@ export default function OrgHomePage() {
 
           {/* Right: Quick actions + Insights */}
           <aside className="md:col-span-3">
+<<<<<<< HEAD
+  <div className="space-y-6">
+    {/* Messages section moved to top */}
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-lg font-medium">Messages</h3>
+        <Link href="/org/messages" className="text-xs text-white/60 hover:text-white">
+          View all
+        </Link>
+      </div>
+                
+=======
             <div className="space-y-6">
               {/* Messages section moved to top */}
               <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -852,6 +868,7 @@ export default function OrgHomePage() {
                   </Link>
                 </div>
 
+>>>>>>> a115a8c940f7b723d718e1ccfc7dad5ffefc92d1
                 <div className="space-y-3">
                   {recentMessages.map((msg) => (
                     <Link href={`/org/messages/${msg.id}`} key={msg.id} className="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors group">
@@ -1311,6 +1328,53 @@ function IssueCredentialModal({ open, onClose }) {
           <div className="border-t border-white/10 pt-5 mb-6">
             <h3 className="text-base font-medium text-white mb-2">Bulk Import</h3>
             <p className="text-sm text-white/60 mb-4">Upload a CSV file with role and address columns to add recipients in bulk.</p>
+<<<<<<< HEAD
+            
+            {participants.map((participant, index) => (
+              <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3 pb-3 border-b border-white/5">
+                <div className="md:col-span-5">
+                  <input
+                    type="text"
+                    value={participant.name}
+                    onChange={(e) => updateParticipant(index, 'name', e.target.value)}
+                    placeholder="Name"
+                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+                  />
+                </div>
+                <div className="md:col-span-6">
+                  <input
+                    type="text"
+                    value={participant.address}
+                    onChange={(e) => updateParticipant(index, 'address', e.target.value)}
+                    placeholder="0x... or did:pkh:..."
+                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
+                  />
+                </div>
+                <div className="md:col-span-1 flex items-center justify-center">
+                  {participants.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => removeParticipant(index)}
+                      className="text-white/60 hover:text-white"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+            
+            <button
+              type="button"
+              onClick={addParticipant}
+              className="mt-1 flex items-center gap-2 text-sm text-fuchsia-300 hover:text-fuchsia-200"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+=======
 
             <div className="flex flex-col gap-3">
               <div className="p-3 rounded-lg bg-black/20 border border-white/10">
@@ -1357,6 +1421,7 @@ function IssueCredentialModal({ open, onClose }) {
           {/* Submit Buttons */}
           <div className="border-t border-white/10 pt-4 mt-4">
             <div className="flex gap-3">
+>>>>>>> a115a8c940f7b723d718e1ccfc7dad5ffefc92d1
               <button
                 type="submit"
                 className="flex-1 rounded-md bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400"
