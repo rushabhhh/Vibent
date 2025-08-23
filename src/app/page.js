@@ -3,6 +3,7 @@
 import {
   useEffect,
   useState, // Add this import
+  useMemo,
 } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -115,6 +116,52 @@ export default function Home() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [followMouse]);
 
+  // Add a state to control when to render stars
+  const [isClient, setIsClient] = useState(false);
+
+  // Use useEffect to set isClient to true after mount
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Generate star properties only on client side using useMemo
+  const starProperties = useMemo(() => {
+    if (!isClient) return [];
+
+    return [...Array(200)].map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      width: `${Math.random() * 2 + 1}px`,
+      height: `${Math.random() * 2 + 1}px`,
+      animationDelay: `${Math.random() * 10}s`,
+      animationDuration: `${Math.random() * 10 + 10}s`,
+    }));
+  }, [isClient]);
+
+  // Generate shooting star properties
+  const shootingStarProperties = useMemo(() => {
+    if (!isClient) return [];
+
+    return [...Array(5)].map(() => ({
+      top: `${Math.random() * 70}%`,
+      left: `${Math.random() * 100}%`,
+      animationDelay: `${Math.random() * 15 + 5}s`,
+      animationDuration: `${Math.random() * 2 + 2}s`,
+    }));
+  }, [isClient]);
+
+  // Create a useMemo for data points similar to stars and shooting stars
+  const dataPointProperties = useMemo(() => {
+    if (!isClient) return [];
+
+    return [...Array(12)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      animationDelay: `${Math.random() * 5}s`,
+      animationDuration: `${Math.random() * 10 + 10}s`,
+    }));
+  }, [isClient]);
+
   return (
     <>
       <Head>
@@ -171,20 +218,14 @@ export default function Home() {
             {/* Space background with animated stars */}
             <div className="absolute inset-0 overflow-hidden">
               <div className="stars-container absolute inset-0">
-                {[...Array(200)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="star"
-                    style={{
-                      top: `${Math.random() * 100}%`,
-                      left: `${Math.random() * 100}%`,
-                      width: `${Math.random() * 2 + 1}px`,
-                      height: `${Math.random() * 2 + 1}px`,
-                      animationDelay: `${Math.random() * 10}s`,
-                      animationDuration: `${Math.random() * 10 + 10}s`,
-                    }}
-                  ></div>
-                ))}
+                {isClient &&
+                  starProperties.map((props, i) => (
+                    <div
+                      key={i}
+                      className="star"
+                      style={props}
+                    ></div>
+                  ))}
               </div>
 
               {/* Animated nebula elements */}
@@ -193,18 +234,14 @@ export default function Home() {
               <div className="absolute top-2/3 left-1/3 h-[200px] w-[200px] rounded-full bg-violet-800/20 blur-[60px] animate-pulse-very-slow"></div>
 
               {/* Shooting stars */}
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="shooting-star"
-                  style={{
-                    top: `${Math.random() * 70}%`,
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 15 + 5}s`,
-                    animationDuration: `${Math.random() * 2 + 2}s`,
-                  }}
-                ></div>
-              ))}
+              {isClient &&
+                shootingStarProperties.map((props, i) => (
+                  <div
+                    key={`shooting-star-${i}`}
+                    className="shooting-star"
+                    style={props}
+                  ></div>
+                ))}
             </div>
 
             {/* Left content */}
@@ -321,7 +358,7 @@ export default function Home() {
                     href="/demo"
                     className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 font-medium text-white/90 transition hover:bg-white/10 backdrop-blur-sm"
                   >
-                    Explore Demo
+                    Know More
                     <svg
                       width="18"
                       height="18"
@@ -398,16 +435,11 @@ export default function Home() {
                   </div>
 
                   {/* Data points floating around planet */}
-                  {[...Array(12)].map((_, i) => (
+                  {isClient && dataPointProperties.map((props, i) => (
                     <div
                       key={`data-point-${i}`}
                       className="absolute w-1.5 h-1.5 rounded-full bg-white/80 data-point"
-                      style={{
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                        animationDelay: `${Math.random() * 5}s`,
-                        animationDuration: `${Math.random() * 10 + 10}s`,
-                      }}
+                      style={props}
                     ></div>
                   ))}
                 </motion.div>

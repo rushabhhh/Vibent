@@ -10,10 +10,10 @@ export default function OrgHomePage() {
 
   // Header nav — trimmed
   const headerNav = [
-    { label: 'Home', href: '/org/home' },
-    { label: 'Credentials', href: '/org/credentials' },
-    { label: 'Settings', href: '/org/settings' },
-    { label: 'Messages', href: '/org/messages' },
+    // { label: 'Home', href: '/org/home' },
+    // { label: 'Credentials', href: '/org/credentials' },
+    // { label: 'Settings', href: '/org/settings' },
+    // { label: 'Messages', href: '/org/messages' },
   ];
 
   // Left rail data
@@ -778,7 +778,7 @@ export default function OrgHomePage() {
                           ))}
                         </ul>
                         <div className="flex items-center gap-2">
-                          <button
+                          {/* <button
                             onClick={() => {
                               setActiveProfile(p);
                               setProfileOpen(true);
@@ -786,8 +786,8 @@ export default function OrgHomePage() {
                             className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10"
                           >
                             View profile
-                          </button>
-                          <Link
+                          </button> */}
+                          {/* <Link
                             href="/org/watchlist"
                             className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10"
                           >
@@ -798,7 +798,7 @@ export default function OrgHomePage() {
                             className="rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm hover:bg-white/10"
                           >
                             Message
-                          </Link>
+                          </Link> */}
                           <button
                             onClick={() => generateAiSummary(p)}
                             className="rounded-lg bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-3 py-2 text-sm font-medium flex items-center gap-1.5"
