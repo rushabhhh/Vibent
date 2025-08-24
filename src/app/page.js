@@ -728,21 +728,21 @@ export default function Home() {
 
                   <div className="flex items-start gap-3 group p-2 rounded-lg transition-all hover:bg-white/5">
                     <div className="mt-1 p-1 rounded-full bg-gradient-to-r from-amber-400 to-amber-600 group-hover:shadow-[0_0_10px_rgba(245,158,11,0.5)]">
-                      <div
+                      <svg
                         width="16"
                         height="16"
                         viewBox="0 0 24 24"
                         fill="none"
                         className="text-black"
                       >
-                        <svg
+                        <path
                           d="M20 6L9 17L4 12"
                           stroke="currentColor"
                           strokeWidth="3"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
-                      </div>
+                      </svg>
                     </div>
                     <div>
                       <h3 className="font-semibold text-amber-300 flex items-center gap-2">
