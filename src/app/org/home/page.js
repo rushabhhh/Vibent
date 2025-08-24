@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 
-
 export default function OrgHomePage() {
   const orgName = 'Nebula Labs';
 
@@ -516,8 +515,11 @@ export default function OrgHomePage() {
     }
   };
 
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-white">
+      
       {/* Background glow */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[40rem] rounded-full bg-fuchsia-600/14 blur-[120px]" />
@@ -571,11 +573,7 @@ export default function OrgHomePage() {
       </nav>
 
       {/* Main */}
-<<<<<<< HEAD
       <main className="mx-auto px-4 py-8 md:py-10"> 
-=======
-      <main className="mx-auto px-4 py-8 md:py-10">
->>>>>>> a115a8c940f7b723d718e1ccfc7dad5ffefc92d1
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
           {/* Left rail: KPIs + Recent Issuance */}
           <aside className="md:col-span-3">
@@ -846,7 +844,6 @@ export default function OrgHomePage() {
 
           {/* Right: Quick actions + Insights */}
           <aside className="md:col-span-3">
-<<<<<<< HEAD
   <div className="space-y-6">
     {/* Messages section moved to top */}
     <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -857,18 +854,6 @@ export default function OrgHomePage() {
         </Link>
       </div>
                 
-=======
-            <div className="space-y-6">
-              {/* Messages section moved to top */}
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-medium">Messages</h3>
-                  <Link href="/org/messages" className="text-xs text-white/60 hover:text-white">
-                    View all
-                  </Link>
-                </div>
-
->>>>>>> a115a8c940f7b723d718e1ccfc7dad5ffefc92d1
                 <div className="space-y-3">
                   {recentMessages.map((msg) => (
                     <Link href={`/org/messages/${msg.id}`} key={msg.id} className="flex items-start gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors group">
@@ -1077,6 +1062,26 @@ export default function OrgHomePage() {
           </div>
         </div>
       )}
+
+      {/* Success Toast */}
+      {showSuccessToast && (
+        <div className="fixed bottom-6 right-6 z-50 animate-fade-in-up">
+          <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-4 shadow-lg backdrop-blur">
+            <div className="flex items-center gap-3">
+              <div className="rounded-full bg-emerald-500/20 p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+              </div>
+              <div>
+                <h4 className="font-medium text-emerald-300">Credentials queued for issuance</h4>
+                <p className="text-sm text-white/70">Your credentials will be sent shortly. This may take a few minutes.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1231,6 +1236,8 @@ function IssueCredentialModal({ open, onClose }) {
     reader.readAsText(file);
   };
 
+  const [showSuccessToast, setShowSuccessToast] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Process form data
@@ -1238,6 +1245,12 @@ function IssueCredentialModal({ open, onClose }) {
       eventName,
       recipients
     });
+    // Show the success toast
+    setShowSuccessToast(true);
+    // Hide the toast after 5 seconds
+    setTimeout(() => {
+      setShowSuccessToast(false);
+    }, 5000);
     onClose();
   };
 
@@ -1328,100 +1341,31 @@ function IssueCredentialModal({ open, onClose }) {
           <div className="border-t border-white/10 pt-5 mb-6">
             <h3 className="text-base font-medium text-white mb-2">Bulk Import</h3>
             <p className="text-sm text-white/60 mb-4">Upload a CSV file with role and address columns to add recipients in bulk.</p>
-<<<<<<< HEAD
             
-            {participants.map((participant, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3 pb-3 border-b border-white/5">
-                <div className="md:col-span-5">
-                  <input
-                    type="text"
-                    value={participant.name}
-                    onChange={(e) => updateParticipant(index, 'name', e.target.value)}
-                    placeholder="Name"
-                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
-                  />
-                </div>
-                <div className="md:col-span-6">
-                  <input
-                    type="text"
-                    value={participant.address}
-                    onChange={(e) => updateParticipant(index, 'address', e.target.value)}
-                    placeholder="0x... or did:pkh:..."
-                    className="w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none focus-visible:ring-1 focus-visible:ring-indigo-400"
-                  />
-                </div>
-                <div className="md:col-span-1 flex items-center justify-center">
-                  {participants.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeParticipant(index)}
-                      className="text-white/60 hover:text-white"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </button>
-                  )}
-                </div>
+            <div className="flex items-center gap-4">
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".csv"
+                onChange={handleCSVUpload}
+                className="hidden"
+              />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current.click()}
+                className="flex-1 rounded-md bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400"
+              >
+                Upload CSV
+              </button>
+              <div className="text-sm text-white/70">
+                {recipients.length} recipient{recipients.length !== 1 && 's'} will be imported
               </div>
-            ))}
-            
-            <button
-              type="button"
-              onClick={addParticipant}
-              className="mt-1 flex items-center gap-2 text-sm text-fuchsia-300 hover:text-fuchsia-200"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-=======
-
-            <div className="flex flex-col gap-3">
-              <div className="p-3 rounded-lg bg-black/20 border border-white/10">
-                <div className="text-xs text-white/70 mb-2">Expected CSV format:</div>
-                <code className="text-xs text-white/80 block">
-                  <span className="text-fuchsia-300">Role,Address</span><br />
-                  Participant,0x71C7656EC7ab88b098defB751B7401B5f6d8976F<br />
-                  Winner,0x7cB57B5A97eAbe94205C07890BE4c1aD31E486A8<br />
-                  Special mention,did:pkh:eip155:1:0x2546BcD3c84621e976D8185a91A922aE77ECEc30<br />
-                  Mentor,0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc
-                </code>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input
-                  type="file"
-                  id="file-upload"
-                  accept=".csv"
-                  onChange={handleCSVUpload}
-                  className="hidden"
-                  ref={fileInputRef}
-                />
-                <label
-                  htmlFor="file-upload"
-                  className="flex-1 cursor-pointer rounded-md border border-white/10 bg-black/30 px-4 py-3 text-sm text-center font-medium transition-all hover:bg-black/40 flex items-center justify-center gap-2"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 16v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2v-4"></path>
-                    <path d="M12 2v12"></path>
-                    <path d="M8 8h8"></path>
-                  </svg>
-                  Upload CSV File
-                </label>
-              </div>
-
-              {importError && (
-                <div className="mt-1 text-sm text-red-400">
-                  {importError}
-                </div>
-              )}
             </div>
-          </div>
 
-          {/* Submit Buttons */}
-          <div className="border-t border-white/10 pt-4 mt-4">
-            <div className="flex gap-3">
->>>>>>> a115a8c940f7b723d718e1ccfc7dad5ffefc92d1
+            {importError && (
+              <div className="mt-3 text-red-400 text-sm">{importError}</div>
+            )}
+            <div className="flex gap-3 mt-6">
               <button
                 type="submit"
                 className="flex-1 rounded-md bg-gradient-to-r from-indigo-500 via-violet-500 to-fuchsia-500 px-4 py-3 text-sm font-medium transition hover:brightness-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-indigo-400"

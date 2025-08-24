@@ -735,7 +735,7 @@ export default function Home() {
                         fill="none"
                         className="text-black"
                       >
-                        <path
+                        <svg
                           d="M20 6L9 17L4 12"
                           stroke="currentColor"
                           strokeWidth="3"

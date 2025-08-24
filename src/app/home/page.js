@@ -397,7 +397,7 @@ export default function HomePage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm font-medium">
                       <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-white/10 text-[10px]">⚙</span>
-                      Proof of Work
+                      Proof of Talent
                     </div>
                     <span className="rounded-md border border-white/10 bg-white/10 px-2 py-0.5 text-[10px]">
                       Building
