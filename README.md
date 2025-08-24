@@ -44,10 +44,8 @@ Together, they form a **decentralized identity layer for skills + vibes**, enabl
 - **Blockchain:** BNB Smart Chain / opBNB (testnet & mainnet)  
 - **Storage:** BNB Greenfield (certificates, metadata, proofs)  
 - **Smart Contracts:** Solidity (Soulbound NFTs for Proof of Talent & Vibe)  
-- **Frontend:** React.js / Next.js (Web) OR Flutter (Mobile-first)  
-- **Wallet Integration:** BNB Wallet / MetaMask  
-- **AI Layer:** Python/Node.js microservices for vibe scoring & recommendation  
-
+- **Frontend:** Next.js (Web), Framermotion, Tailwind (Styling)
+- **Backend:** Node.js, Supabase (Database)
 ---
 
 ## 📦 Architecture
