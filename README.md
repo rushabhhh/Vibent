@@ -86,11 +86,17 @@ npm run dev
 Env Variables :
 
 NEXT_PUBLIC_WC_PROJECT_ID : Used to allow users to connect their crypto wallets (Metamask, Trust Wallet, etc.) to your app.
+
 NEXT_PUBLIC_SUPABASE_URL: The API URL for Supabase project.
+
 NEXT_PUBLIC_SUPABASE_ANON_KEY: Public anon key for Supabase.
+
 SUPABASE_SERVICE_ROLE_KEY: Used for privileged operations (e.g., inserting verified credentials, mapping NFT IDs).
+
 TOGETHER_API_KEY: Together.ai API (AI models provider)
+
 AUTH_JWT_SECRET: Secret used to sign/verify JWT tokens for authentication.
+
 ---
 
 ✨ *Proof of Vibe & Talent – Own your identity. Prove your skills. Connect authentically.*  
