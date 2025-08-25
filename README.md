@@ -2,7 +2,8 @@
 **A Decentralized Social (DeSoc) Platform for Authentic Skills & Connections**  
 
 ## 🚀 Overview  
-Today’s social and professional platforms (LinkedIn, Instagram, etc.) are filled with **fake credentials, inflated achievements, and shallow engagement**. Recruiters can’t verify claims, and communities struggle to identify authentic talent.  
+Today’s social and professional platforms (LinkedIn, Instagram, etc.) are filled with **fake credentials, inflated achievements, and shallow engagement**. Anyone can post ‘I won XYZ hackathon’ on LinkedIn — but how do you know it’s real?”
+Certificates can be faked, edited, or borrowed from a friend. Achievements are inflated, credentials unverifiable. Recruiters, communities, and networks are left guessing.
 
 We’re solving this with **Proof of Talent** and **Proof of Vibe**, two on-chain primitives for the future of decentralized society:  
 
