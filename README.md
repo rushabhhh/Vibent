@@ -1,4 +1,4 @@
-# 🌐 Proof of Vibe & Talent  
+# 🌐 Team MetaVibe Presents : VIBENT 
 **A Decentralized Social (DeSoc) Platform for Authentic Skills & Connections**  
 
 ## 🚀 Overview  
