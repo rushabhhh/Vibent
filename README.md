@@ -1,5 +1,6 @@
 # 🌐 Team MetaVibe Presents : VIBENT 
-**A Decentralized Social (DeSoc) Platform for Authentic Skills & Connections**  
+**A Decentralized Social (DeSoc) Platform for Authentic Skills & Connections** 
+Checkout the demo : https://drive.google.com/file/d/1-2jgijDaDzvk3LD0iDxOV55bg211nyxH/view?usp=sharing 
 
 ## 🚀 Overview  
 Today’s social and professional platforms (LinkedIn, Instagram, etc.) are filled with **fake credentials, inflated achievements, and shallow engagement**. Anyone can post ‘I won XYZ hackathon’ on LinkedIn — but how do you know it’s real?”
